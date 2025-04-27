@@ -49,16 +49,16 @@ export  default class Paddle {
         return paddle;
     }
     updatePaddlesMovement() {
-        if (this.moveUpL && this.leftPaddle.position.z < this.z_max - this.depth / 2) {
+        if (this.moveUpL /* && this.leftPaddle.position.z < this.z_max - this.depth / 2 */) {
             this.leftPaddle.position.z += this.paddleSpeed;
         }
-        if (this.moveDownL && this.leftPaddle.position.z > this.z_min + this.depth / 2) {
+        if (this.moveDownL /* && this.leftPaddle.position.z > this.z_min + this.depth / 2 */) {
             this.leftPaddle.position.z -= this.paddleSpeed;
         }
-        if (this.moveUpR && this.rightPaddle.position.z < this.z_max - this.depth / 2) {
+        if (this.moveUpR /* && this.rightPaddle.position.z < this.z_max - this.depth / 2 */) {
             this.rightPaddle.position.z += this.paddleSpeed;
         }
-        if (this.moveDownR && this.rightPaddle.position.z > this.z_min + this.depth / 2) {
+        if (this.moveDownR/*  && this.rightPaddle.position.z > this.z_min + this.depth / 2 */) {
             this.rightPaddle.position.z -= this.paddleSpeed;
         }
     }
@@ -77,23 +77,27 @@ export  default class Paddle {
         console.log("Paddle boundaries : x_max", this.x_max, " x_min", this.x_min);
         console.log("Paddle depth :", this.depth);
     }
-    handler(key)
+    handler(event)
     {
-        console.log(" [Paddle] key pressed")
-        switch (key) {
+        console.log(` [Paddle] key pressed ${event.key}`)
+        switch (event.key) {
             case "ArrowUp":
                 this.moveUpR = true;
+                console.log(" [Paddle] ArrowUp")
                 break;
             case "ArrowDown":
                 this.moveDownR = true;
+                console.log(" [Paddle]  ArrowDown")
                 break;
             case "W":
             case "w":
                 this.moveUpL = true;
+                console.log(" [Paddle] w ")
                 break;
             case "S":
             case "s":
                 this.moveDownL = true;
+                console.log(" [Paddle] S ")
                 break;
         }
     }
@@ -137,7 +141,8 @@ export  default class Paddle {
             }
         });
     }
-    update() {
+    update(key) {
+        this.handler(key)
         this.updatePaddlesMovement();
     }
 }

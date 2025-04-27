@@ -1,4 +1,8 @@
 
+const { s_rooms } = require ('./s_rooms.js')
+const { s_ball } = require ('./s_ball.js')
+const { s_players } = require ('./s_players.js')
+const { game } = require ('./game.js')
 const fastify = require('fastify')({logger: true }) // ✅ enables built-in logging
 const cors = require('@fastify/cors'); // Import @fastify/cors using require
 const websocketPlugin = require('@fastify/websocket')
@@ -12,11 +16,13 @@ fastify.register(cors, { origin: '*' });
 let clients = new Map()
 
 // test
-let left_bound = -30;
-let right_bound = 30;
+let left_bound = -30 ;
+let right_bound = 30 ;
 let current_x = 0 ;
 let playerCount = 0; 
+let ballCount = 0;
 let rooms = []
+let roomsid = 0;
 //
 
 
@@ -72,34 +78,26 @@ setInterval(() => {
 }, 2000);
 
 
+fastify.decorate('game', new game());
+
 
 fastify.register(async function (fastify) 
 {
- 
+
+
+  
   fastify.get(`/`, { websocket: true }, (socket) => 
-  {
+    {
+      
+      
+      fastify.game.loop(socket);
       const socketid = socketidCount++;
+
       clients.set(socketid,socket);
 
-              /// value - key
-      clients.forEach((otherSocket, otherSocketId) =>
-      {
-            if (otherSocketId !== socketid && otherSocket.readyState === 1)
-            {
-              clients.get(otherSocketId).send(JSON.stringify
-              ({ 
-                system: true, message: `🟢  socket ${socketid} Joined ` 
-              }));
 
 
 
-              fastify.log.info(` socketid: ${socketid} send to  socketID : ${otherSocketId} ` )
-              fastify.log.info(` the msg : 🟢  socket ${socketid} Joined ` )
-            }
-
-      });
-
-                  /// test to count players; 
                
     if(socket.readyState === 1 )
      {
@@ -118,27 +116,13 @@ fastify.register(async function (fastify)
           
     }
     }
-    
-    
-      socket.on('message', message => 
-      {
-          const msg = message.toString();
-          fastify.log.info(`[server]  socket id ${socketid} receive :  ${msg}`);
-          for (const [id,socket] of clients) 
-          {
-            
-            if (id !== socketid && socket.readyState === 1)
-            {
-              socket.send(JSON.stringify({ message: msg }));
-              fastify.log.info(`[server]  socket send msg to id  ${id} - ${msg}`);
-            }
-        }
 
-      });
     
         socket.on('close', () =>
         {
           clients.delete(socket);
+          // delete for rooms too 
+          rooms = rooms.filter(roomSocket => roomSocket !== socket);
           for (const [id,socket] of clients)
           {
             if (socket.readyState === 1) 

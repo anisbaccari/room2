@@ -40,14 +40,13 @@ export default class CanvasComponent {
     run() {
         // Set up the keydown event listener
         window.addEventListener("keydown", (event) => {
-            this.paddle.handler(event);
+            this.paddle.update(event);
             if (event.key === "i")
                 this.ball.display();
             if (event.key === "p") { // Press 'p' to pause/unpause
                 this.isRendering = !this.isRendering;
                 console.log(this.isRendering ? "Rendering resumed!" : "Rendering paused!");
                 if (this.isRendering) {
-                    // Resume the render loop
                     this.engine.runRenderLoop(() => {
                     //    this.pong.update(); // Update paddles' movement based on key states
                         this.scene.render();
@@ -62,7 +61,7 @@ export default class CanvasComponent {
         // Start the render loop initially
         if (this.isRendering) {
             this.engine.runRenderLoop(() => {
-            //    this.pong.update(); // Update paddles' movement based on key states
+            //    this.pong.update(); 
                 this.scene.render();
             });
         }
