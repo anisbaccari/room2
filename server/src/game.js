@@ -36,8 +36,10 @@ class game {
    loop(socket )
    {
       this.display();
-      for (let room of this.rooms)
+
+      for (let i = 0; i < this.rooms.length; i++)
       {
+         let room = this.rooms[i];
             if(room.length < 2 )
             {
                let newplayer = new s_players(socket,this.playerID)
@@ -47,6 +49,8 @@ class game {
                console.log("*********** NEW PLAYERS ADDED");
                break;
             }
+            else 
+            this.rooms.push(new s_rooms()); 
       }
    }
 

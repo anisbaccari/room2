@@ -14,7 +14,14 @@ class  s_rooms {
 
     init()
     {
-
+        if(this.players.length !=2)
+            return false;
+        for( let player of this.players)
+        {
+            if(player.socket.readyState != 1)
+                return false; 
+        }
+        return true;
     }
 
     setup(player)

@@ -28,8 +28,8 @@ let roomsid = 0;
 
 let socketidCount = 0;
 
-function startGame(rooms)
-{
+
+/* 
   
   fastify.log.info( `room size  ${rooms.size}`);
 
@@ -48,9 +48,19 @@ function startGame(rooms)
           return; 
     if(is_ready)
     updateBall(rooms);
+     */
+function startGame(rooms)
+{
+  for (let i = 0; i < rooms.length; i++)
+  {
+    let room = rooms[i];
+    if(room.init())
+      updateBall(room.players)
+  }
+
 }
 
-function updateBall(clients)
+function updateBall(players)
 {
 
   dx =  Math.random() < 0.5 ? 10 : -10; 
@@ -61,10 +71,10 @@ function updateBall(clients)
       dx = -dx; 
       current_x += dx; 
   }
-  clients.forEach( socket => 
+  players.forEach( player => 
   { 
 
-    socket.send(JSON.stringify
+    player.socket.send(JSON.stringify
       ({ 
         ball: true, x: dx, ball_x: current_x
       }));
@@ -74,7 +84,8 @@ function updateBall(clients)
 
 }
 setInterval(() => {
-  startGame(clients);
+  let rooms = fastify.game.rooms;
+  startGame(rooms);
 }, 2000);
 
 
@@ -92,13 +103,7 @@ fastify.register(async function (fastify)
       
       fastify.game.loop(socket);
       const socketid = socketidCount++;
-
-      clients.set(socketid,socket);
-
-
-
-
-               
+          
     if(socket.readyState === 1 )
      {
                       
