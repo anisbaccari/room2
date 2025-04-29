@@ -32,7 +32,12 @@ export default class socketClient
          
       this.ws.onopen = () => 
           {
-   
+/*    
+             this.ws.send(JSON.stringify({
+                  event: "greeting",
+                  succes: true,
+                  data: "Hello from the frontend!"
+              })); */
                   this.ws.addEventListener('message', (event) => 
                     {
                       try {

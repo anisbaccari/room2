@@ -8,6 +8,9 @@ class  s_rooms {
         this.length = 0;
         this.players = [];
         this.balls = [];
+        this.left_bound = -30 ;
+        this.right_bound = 30 ;
+        this.current_x = 0 ;
     }
 
 
@@ -28,7 +31,28 @@ class  s_rooms {
     {
         this.players.push(player);
         this.length++;
+    }
 
+    updateBall()
+    {
+    
+      let dx =  Math.random() < 0.5 ? 10 : -10; 
+      this.current_x += dx;
+    
+      if( this.current_x < this.left_bound || this.current_x > this.right_bound)
+      {
+          dx = -dx; 
+          this.current_x += dx; 
+      }
+      this.players.forEach( player => 
+      { 
+    
+        player.socket.send(JSON.stringify
+          ({ 
+            ball: true, x: dx, ball_x: this.current_x
+          }));
+    
+      })
     }
     broadcast(senderSocket) {
 

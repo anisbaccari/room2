@@ -27,13 +27,7 @@ class game {
    
    }
 
-   setup( room)
-   {
-        // this.rooms.push(room); 
-        
-   }
-
-   loop(socket )
+   setup( socket)
    {
       this.display();
 
@@ -52,7 +46,19 @@ class game {
             else 
             this.rooms.push(new s_rooms()); 
       }
+        
    }
+
+   loop( )
+   {
+      for( let room of this.rooms)
+      {
+         if(room.init())
+            room.updateBall(room.players)
+      }
+      
+   }
+
 
    broadcast(socket)
    {

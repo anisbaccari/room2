@@ -15,93 +15,29 @@ fastify.register(cors, { origin: '*' });
  //// KEY [id] - value [socket]
 let clients = new Map()
 
-// test
-let left_bound = -30 ;
-let right_bound = 30 ;
-let current_x = 0 ;
-let playerCount = 0; 
-let ballCount = 0;
 let rooms = []
-let roomsid = 0;
-//
-
 
 let socketidCount = 0;
 
-
-/* 
-  
-  fastify.log.info( `room size  ${rooms.size}`);
-
-  let is_ready = true; 
-  rooms.forEach( socket  =>
-    {
-      if(socket.readyState !== 1)
-        {
-          is_ready = false; 
-          console.log(" socket not ready");
-          rooms.delete(socket);
-        }
-        
-    })
-    if(rooms.size !== 2)
-          return; 
-    if(is_ready)
-    updateBall(rooms);
-     */
-function startGame(rooms)
-{
-  for (let i = 0; i < rooms.length; i++)
-  {
-    let room = rooms[i];
-    if(room.init())
-      updateBall(room.players)
-  }
-
-}
-
-function updateBall(players)
-{
-
-  dx =  Math.random() < 0.5 ? 10 : -10; 
-  current_x += dx;
-
-  if( current_x < left_bound || current_x > right_bound)
-  {
-      dx = -dx; 
-      current_x += dx; 
-  }
-  players.forEach( player => 
-  { 
-
-    player.socket.send(JSON.stringify
-      ({ 
-        ball: true, x: dx, ball_x: current_x
-      }));
-
-  })
+fastify.decorate('game', new game());
 
 
-}
 setInterval(() => {
-  let rooms = fastify.game.rooms;
-  startGame(rooms);
+/*   let rooms = fastify.game.rooms;
+  startGame(rooms); */
+  fastify.game.loop();
 }, 2000);
 
-
-fastify.decorate('game', new game());
 
 
 fastify.register(async function (fastify) 
 {
 
-
-  
   fastify.get(`/`, { websocket: true }, (socket) => 
-    {
+  {
       
       
-      fastify.game.loop(socket);
+      fastify.game.setup(socket);
       const socketid = socketidCount++;
           
     if(socket.readyState === 1 )
@@ -119,7 +55,7 @@ fastify.register(async function (fastify)
           }));
         });
           
-    }
+      }
     }
 
     

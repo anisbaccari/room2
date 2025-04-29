@@ -4,7 +4,7 @@ class Client
 { 
 
     constructor()
-    {
+    {   
     /*     this.content = document.getElementById('content') ;
         if(this.content)
           this.canvas = new CanvasComponent(content); */
