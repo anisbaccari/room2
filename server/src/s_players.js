@@ -24,15 +24,15 @@ class s_players
 
     listen()
     {    
-        this.socket.on('message', message => 
+        this.socket.on('message', msg => 
         {
             try
             {
-                const data = JSON.parse(message);
-                console.log(` [PLAYER ${this.id}] : ${data}`);
+                const event = JSON.parse(msg);
+                console.log(` [PLAYER ${this.id}] : ${event.data}`);
             } catch(e)
             {
-                console.error(`Invalid JSON in:`, message.data);
+                console.error(`Invalid JSON in:`, msg);
             }
                 
         })

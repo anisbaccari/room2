@@ -15,6 +15,7 @@ export default class socketClient
           players: [], 
           ball:ball
         }
+        this.isRendering = true;
         this.content = document.getElementById('content') ;
                 
         if(!this.content)
@@ -22,6 +23,7 @@ export default class socketClient
           
         this.canvas = new CanvasComponent(content);
         this.init(URL);
+        this.listen();
 
     }
 
@@ -61,10 +63,7 @@ export default class socketClient
                         console.error(`Invalid JSON in:`, event.data);
                       }
                     });
-                
-                    this.ws.addEventListener('open', () => {
-                      console.log(`Connected to `);
-                    });
+
                 
                     this.ws.addEventListener('close', () => {
                     console.log(`disconnected`);
@@ -79,6 +78,52 @@ export default class socketClient
       if(!rooms.id || !rooms.players || !rooms.ball)
         throw new Error("[setup] Invalide rooms");
       this.rooms  = rooms;
+    }
+
+    sendMove(data)
+    {
+        if(this.ws.readyState  == 1)
+        {
+          this.ws.send(JSON.stringify(
+            {
+            event: "paddle",
+            succes: true,
+            data: `${data}`
+            }));
+
+          this.canvas.updatePaddle(data);
+        } else 
+          console.log("[client] sendMove : socket not ready")
+    }
+
+    updateMove()
+    {
+      
+    }
+
+    listen()
+    {
+      window.addEventListener("keydown", (event) =>
+      {
+        
+        this.sendMove(event);
+        if (event.key === "p") 
+        { // Press 'p' to pause/unpause
+          this.isRendering = !this.isRendering;
+          console.log(this.isRendering ? "Rendering resumed!" : "Rendering paused!");
+          if (this.isRendering) {
+              this.canvas.engine.runRenderLoop(() => {
+              //    this.pong.update(); // Update paddles' movement based on key states
+                  this.canvas.scene.render();
+              });
+          }
+          else {
+              // Stop the render loop
+              this.canvas.engine.stopRenderLoop();
+          }
+        }
+      })
+
     }
     info()
     {

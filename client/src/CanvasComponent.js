@@ -37,27 +37,12 @@ export default class CanvasComponent {
             this.engine.resize();
         });
     }
+
+    updatePaddle(event)
+    {
+        this.paddle.update(event);
+    }
     run() {
-        // Set up the keydown event listener
-        window.addEventListener("keydown", (event) => {
-            this.paddle.update(event);
-            if (event.key === "i")
-                this.ball.display();
-            if (event.key === "p") { // Press 'p' to pause/unpause
-                this.isRendering = !this.isRendering;
-                console.log(this.isRendering ? "Rendering resumed!" : "Rendering paused!");
-                if (this.isRendering) {
-                    this.engine.runRenderLoop(() => {
-                    //    this.pong.update(); // Update paddles' movement based on key states
-                        this.scene.render();
-                    });
-                }
-                else {
-                    // Stop the render loop
-                    this.engine.stopRenderLoop();
-                }
-            }
-        });
         // Start the render loop initially
         if (this.isRendering) {
             this.engine.runRenderLoop(() => {
