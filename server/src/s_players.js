@@ -7,7 +7,7 @@ class s_players
         this.socket = socket;
         this.id = id;
         this.paddle =  new s_paddle();
-       // this.listen(); 
+        this.listen(); 
         this.display(); 
     }   
 
