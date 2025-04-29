@@ -28,8 +28,27 @@ class s_players
         {
             try
             {
-                const event = JSON.parse(msg);
-                console.log(` [PLAYER ${this.id}] : ${event.data}`);
+                const response = JSON.parse(msg);
+                const key = Object.keys(response)[0];
+                const state = Object.keys(response)[1];
+                const value = response[key]
+                console.log(` [PLAYER ${this.id}] : ${response[key]}`);
+
+                if(!state)
+                    throw new Error(`[Server] Invalide state : ${state} `);
+
+                switch (value)
+                {
+                    case 'Paddle':
+                      console.log(` ==== Paddle msg : ${response["position"]}`)
+                        break; 
+                    case 'ball': 
+                        break; 
+                    default: 
+                    console.log(` ==== msg : ${key}`)
+                    break;
+                }
+
             } catch(e)
             {
                 console.error(`Invalid JSON in:`, msg);
@@ -40,3 +59,4 @@ class s_players
 }
 
 module.exports = { s_players};
+

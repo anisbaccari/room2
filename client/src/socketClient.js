@@ -40,27 +40,38 @@ export default class socketClient
                   succes: true,
                   data: "Hello from the frontend!"
               }));
-                  this.ws.addEventListener('message', (event) => 
+                  this.ws.addEventListener('message', (msg) => 
                     {
                       try {
-                        const data = JSON.parse(event.data);
+                        const event = JSON.parse(msg.data);
+                        const key = Object.keys(event)[0];
+                        const state = Object.keys(event)[1];
+                        const value = event[key]
                         
-                        if(data.init)
-                          this.setup(data.rooms);
-                        else if(data.message)
-                         console.log(` [server] : ${data.message}`)
-                        else if(data.ball)
-                          {
-                            this.info();
-                            let x = data.x;
-                            console.log(`[client] ball.x : ${data.x} - current_x ${data.ball_x}`)
-                              this.canvas.ball.mesh.position.x += x; 
-                          }    
-                              
+                        if(!state)
+                          throw new Error(`[Client] Invalide state : ${state} `);
 
-  
+                        switch (key) {
+                          case 'init':
+                            this.setup(event.rooms);
+                            break;
+                          case 'message':
+                            console.log(` [server] : ${event.message}`);
+                            break;
+                          case 'Paddle':
+                            this.updateMove("ele")
+                            break;
+                          case 'ball':
+                            this.info();
+                            let x = event.x;
+                            console.log(`[client] ball.x : ${event.x} - current_x ${event.ball_x}`);
+                            this.canvas.ball.mesh.position.x += x;
+                            break;
+                          default:
+                            break;
+                        }
                       } catch (err) {
-                        console.error(`Invalid JSON in:`, event.data);
+                        console.error(`Invalid JSON in:`, msg);
                       }
                     });
 
@@ -82,13 +93,14 @@ export default class socketClient
 
     sendMove(data)
     {
+      console.log(`[client] sendMove : ${data.key}`)
         if(this.ws.readyState  == 1)
         {
           this.ws.send(JSON.stringify(
             {
-            event: "paddle",
+            event: "Paddle",
             succes: true,
-            data: `${data}`
+            position: `${data}`
             }));
 
           this.canvas.updatePaddle(data);
@@ -96,9 +108,9 @@ export default class socketClient
           console.log("[client] sendMove : socket not ready")
     }
 
-    updateMove()
+    updateMove(event)
     {
-      
+      console.log(` [SERVER] FOR PADDLE : ${event}`)
     }
 
     listen()

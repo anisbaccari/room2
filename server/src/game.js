@@ -5,11 +5,13 @@ const { s_rooms } = require('./s_rooms.js');
 
 class game {
 
-   constructor()
+   constructor(logger)
    {
       this.rooms  = []
       this.rooms.push(new s_rooms()); 
-      this.playerID = 0; 
+      this.playerID = 0;
+      // to use fastify log inside 
+      this.log  = logger; 
    }
 
    init()
@@ -54,7 +56,7 @@ class game {
       for( let room of this.rooms)
       {
          if(room.init())
-            room.updateBall(room.players)
+            room.updateBall()
       }
       
    }

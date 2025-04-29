@@ -54,6 +54,7 @@ class  s_rooms {
     
       })
     }
+    
     broadcast(senderSocket) {
 
         const senderPlayer = this.players.find(player => player.socket == senderSocket);

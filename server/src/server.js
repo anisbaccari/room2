@@ -19,7 +19,7 @@ let rooms = []
 
 let socketidCount = 0;
 
-fastify.decorate('game', new game());
+fastify.decorate('game', new game(fastify.log));
 
 
 setInterval(() => {
@@ -38,7 +38,6 @@ fastify.register(async function (fastify)
       
       
       fastify.game.setup(socket);
-      const socketid = socketidCount++;
           
     if(socket.readyState === 1 )
      {
