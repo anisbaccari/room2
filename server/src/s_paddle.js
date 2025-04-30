@@ -25,24 +25,16 @@ class s_paddle
 
         switch(key)
         {
+            case "W":
+            case "w":
             case "ArrowUp":
                 console.log(" [Paddle] ArrowUp")
                 return this.check_z_Bounderies(key,true)
-                break;
+            case "S":
+            case "s":
             case "ArrowDown":
                 console.log(" [Paddle]  ArrowDown")
                return this.check_z_Bounderies(key,false)
-                break;
-            case "W":
-            case "w":
-                console.log(" [Paddle] w ")
-               return this.check_z_Bounderies(key,true)
-                break;
-            case "S":
-            case "s":
-                console.log(" [Paddle] S ")
-               return this.check_z_Bounderies(key,false)
-                break;
             default:
                 break;
         }

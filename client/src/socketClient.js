@@ -3,25 +3,16 @@ import CanvasComponent from './CanvasComponent.js'
 
 export default class socketClient 
 {  
-    constructor(URL)
+    constructor(URL,cfg)
     {
 
-        /// init the rooms 
-        let roomsid;
-        let ball;
-        let players  = [];
-        let rooms = {
-          id:roomsid,
-          players: [], 
-          ball:ball
-        }
         this.isRendering = true;
         this.content = document.getElementById('content') ;
                 
         if(!this.content)
           throw new Error(" no CanvasComponent");
           
-        this.canvas = new CanvasComponent(content);
+        this.canvas = new CanvasComponent(content,cfg);
         this.init(URL);
         this.listen();
 
@@ -115,13 +106,13 @@ export default class socketClient
    
       
       const state =event["succes"];
-      const ballSpeed = event["data"]; 
+      const paddleSpeed = event["data"]; 
 
-      console.log(` [SERVER] FOR PADDLE  (State) : ${state}  ${ballSpeed} `)
+      console.log(` [SERVER] FOR PADDLE  (State) : ${state}  ${paddleSpeed} `)
       if(!state)
         return; 
       else 
-      this.canvas.updatePaddle(ballSpeed);
+      this.canvas.updatePaddle(paddleSpeed);
 
     }
 

@@ -2,8 +2,11 @@ import Ball from './ball.js'
 import Paddle from './Paddle.js'
 
 export default class CanvasComponent {
-    constructor(containerId) {
+    constructor(containerId,ConfigGame) {
         
+        this.config = ConfigGame
+        if(!this.config)
+            throw new Error(" no ConfigGame");
         this.container = containerId
         this.isRendering = true;
         this.canvas = document.createElement("canvas");
@@ -38,10 +41,10 @@ export default class CanvasComponent {
         });
     }
 
-    updatePaddle(event)
+    updatePaddle(move)
     {
-        console.log(`[ [CanvasCompenent] : ${Object.keys(event)}`)
-        this.paddle.update(event);
+        console.log(`[ [CanvasCompenent] : ${move}`)
+        this.paddle.update(move);
     }
     run() {
         // Start the render loop initially

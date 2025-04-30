@@ -77,10 +77,10 @@ export  default class Paddle {
         console.log("Paddle boundaries : x_max", this.x_max, " x_min", this.x_min);
         console.log("Paddle depth :", this.depth);
     }
-    handler(event)
+    handler(key)
     {
-        console.log(` [Paddle] key pressed ${event.key}`)
-        switch (event.key) {
+        console.log(` [Paddle] key pressed ${key}`)
+        switch (key) {
             case "ArrowUp":
                 this.moveUpR = true;
                 console.log(" [Paddle] ArrowUp")

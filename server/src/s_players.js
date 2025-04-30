@@ -64,6 +64,7 @@ class s_players
     update(event)
     {
         console.log(` [update] event : ${event}`)
+        // check if we can 
         let res =  this.paddle.updatePaddlesMovement(event);
         this.send(res);
     }
