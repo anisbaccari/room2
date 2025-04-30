@@ -12,6 +12,7 @@ class game {
       this.playerID = 0;
       // to use fastify log inside 
       this.log  = logger; 
+      this.playground = {g_width:0,y:0,g_deepth:0,g_speedBall: 1.5};
    }
 
    init()
@@ -38,7 +39,7 @@ class game {
          let room = this.rooms[i];
             if(room.length < 2 )
             {
-               let newplayer = new s_players(socket,this.playerID)
+               let newplayer = new s_players(socket,this.playerID,this.playground)
                this.playerID++;
                room.setup(newplayer); 
                room.broadcast(socket);

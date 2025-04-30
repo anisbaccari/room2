@@ -48,10 +48,11 @@ export default class socketClient
                         const state = Object.keys(event)[1];
                         const value = event[key]
                         
-                        if(!state)
+                        console.log(`[SocketClient] send : ${value}`)
+                        if( state == "error")
                           throw new Error(`[Client] Invalide state : ${state} `);
 
-                        switch (key) {
+                        switch (value) {
                           case 'init':
                             this.setup(event.rooms);
                             break;
@@ -59,7 +60,7 @@ export default class socketClient
                             console.log(` [server] : ${event.message}`);
                             break;
                           case 'Paddle':
-                            this.updateMove("ele")
+                            this.updateMove(event)
                             break;
                           case 'ball':
                             this.info();
@@ -100,17 +101,24 @@ export default class socketClient
             {
             event: "Paddle",
             succes: true,
-            position: `${data}`
+            position: data.key
             }));
 
-          this.canvas.updatePaddle(data);
+        
         } else 
           console.log("[client] sendMove : socket not ready")
     }
 
-    updateMove(event)
+    updateMove(data)
     {
-      console.log(` [SERVER] FOR PADDLE : ${event}`)
+      console.log(` [SERVER] FOR PADDLE : ${Object.keys(data)}`)
+      const event = JSON.parse(msg.data);
+      const state = Object.keys(event)[1];
+      if(!state)
+        return; 
+      else 
+      this.canvas.updatePaddle(data);
+
     }
 
     listen()
