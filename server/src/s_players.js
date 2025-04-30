@@ -64,8 +64,8 @@ class s_players
     update(event)
     {
         console.log(` [update] event : ${event}`)
-      let res =  this.paddle.updatePaddlesMovement(event);
-      this.send(res);
+        let res =  this.paddle.updatePaddlesMovement(event);
+        this.send(res);
     }
 
     send(resulte)
@@ -85,7 +85,7 @@ class s_players
             
                 type: "Paddle",
                 succes: false,
-                data: this.g_speedBall
+                data: 0
             
             })))
     

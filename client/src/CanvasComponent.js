@@ -40,6 +40,7 @@ export default class CanvasComponent {
 
     updatePaddle(event)
     {
+        console.log(`[ [CanvasCompenent] : ${Object.keys(event)}`)
         this.paddle.update(event);
     }
     run() {

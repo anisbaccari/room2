@@ -109,15 +109,19 @@ export default class socketClient
           console.log("[client] sendMove : socket not ready")
     }
 
-    updateMove(data)
+    updateMove(event)
     {
-      console.log(` [SERVER] FOR PADDLE : ${Object.keys(data)}`)
-      const event = JSON.parse(msg.data);
-      const state = Object.keys(event)[1];
+      console.log(` [SERVER] FOR PADDLE : ${Object.keys(event)}`)
+   
+      
+      const state =event["succes"];
+      const ballSpeed = event["data"]; 
+
+      console.log(` [SERVER] FOR PADDLE  (State) : ${state}  ${ballSpeed} `)
       if(!state)
         return; 
       else 
-      this.canvas.updatePaddle(data);
+      this.canvas.updatePaddle(ballSpeed);
 
     }
 
