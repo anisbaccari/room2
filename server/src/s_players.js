@@ -9,14 +9,22 @@ class s_players
         this.playground = playground;
         this.g_speedBall = this.playground.g_speedBall;
         this.paddle =  new s_paddle( this.playground );
+        this.setup();
         this.listen(); 
         this.display(); 
     }   
 
 
-    setup(id)
+    setup()
     {
-        this.id = id;
+
+        this.socket.send((JSON.stringify(
+            {   
+                type: "player",
+                succes: true,
+                data: this.id
+                
+            })))
     }
     display()
     {

@@ -43,6 +43,7 @@ class game {
                this.playerID++;
                room.setup(newplayer); 
                room.broadcast(socket);
+               /// TEST 
                console.log("*********** NEW PLAYERS ADDED");
                break;
             }

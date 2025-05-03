@@ -3,9 +3,9 @@ import CanvasComponent from './CanvasComponent.js'
 
 export default class socketClient 
 {  
-    constructor(URL,cfg)
+    constructor(URL,cfg,playerid)
     {
-
+        this.playerid = playerid;
         this.isRendering = true;
         this.content = document.getElementById('content') ;
                 
@@ -15,6 +15,8 @@ export default class socketClient
         this.canvas = new CanvasComponent(content,cfg);
         this.init(URL);
         this.listen();
+
+        
 
     }
 
@@ -39,16 +41,17 @@ export default class socketClient
                         const state = Object.keys(event)[1];
                         const value = event[key]
                         
-                        console.log(`[SocketClient] send : ${value}`)
                         if( state == "error")
                           throw new Error(`[Client] Invalide state : ${state} `);
-
                         switch (value) {
                           case 'init':
                             this.setup(event.rooms);
                             break;
                           case 'message':
                             console.log(` [server] : ${event.message}`);
+                            break;
+                          case 'player':
+                            console.log(` [server] playerid : ${event.data}`);
                             break;
                           case 'Paddle':
                             this.updateMove(event)

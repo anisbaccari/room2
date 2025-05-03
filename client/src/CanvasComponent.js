@@ -10,9 +10,11 @@ export default class CanvasComponent {
         this.container = containerId
         this.isRendering = true;
         this.canvas = document.createElement("canvas");
-        this.canvas.style.width = "50vw";
-        this.canvas.style.height = "50vh";
+        this.canvas.style.width = this.config.g_width;
+        this.canvas.style.height = this.config.g_height;
         
+        /// TEST
+        console.log(` g_width : ${this.config.g_width}  g_height ${this.config.g_height} `)
         // Add the object to the page 
         
         if(this.container)
