@@ -44,17 +44,12 @@ export default class CanvasComponent {
         });
     }
 
-    alo()
+    set_paddleSide(side)
     {
-        console.log(`[CanvasComponent] Is Rendering: ${this.isRendering}`);
-        console.log(`[CanvasComponent] Paddle Side: ${this.paddleSide}`);
-        console.log(`[CanvasComponent] Canvas Element: ${this.canvas}`);
-        console.log(`[CanvasComponent] Scene: ${this.scene}`);
-        console.log(`[CanvasComponent] Paddle Instance: ${this.paddle}`);
-        console.log(`[CanvasComponent] Ball Instance: ${this.ball}`);
-       /*  this.paddleSide = side; 
+        this.paddleSide = side; 
+        console.log(`[ [CanvasCompenent] |  : ${this.paddleSide}`)
 
-        this.paddle.setSide(this.paddleSide); */
+        this.paddle.setSide(this.paddleSide);
     }
 
     updatePaddle(move)

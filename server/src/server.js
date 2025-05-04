@@ -67,7 +67,10 @@ fastify.register(async function (fastify)
           {
             if (socket.readyState === 1) 
             {
-              socket.send(JSON.stringify({ system: true, message: `🔕 Someone left ` }));
+              socket.send(JSON.stringify({ 
+                type: "message",
+                succes : true,
+                data: `🔕 Someone left ` }));
             }
           }
 

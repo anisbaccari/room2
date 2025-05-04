@@ -98,7 +98,11 @@ class  s_rooms {
                 ? `You are connected with id: ${player.id}` 
                 : `New player connected with id: ${senderPlayer.id}`;
             
-            player.socket.send(JSON.stringify({ system: true, message: msg }));
+            player.socket.send(JSON.stringify({ 
+                type: "message", 
+                succes: true, 
+                data : null
+            }));
         }
     }
 

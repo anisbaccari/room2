@@ -29,7 +29,7 @@ export default class socketClient
           {
    
              this.ws.send(JSON.stringify({
-                  event: "greeting",
+                  type: "greeting",
                   succes: true,
                   data: "Hello from the frontend!"
               }));
@@ -41,6 +41,7 @@ export default class socketClient
                         const state = Object.keys(event)[1];
                         const value = event[key]
                         
+                        console.log(` [server] event: ${Object.keys(event)}`);
                         if( state == "error")
                           throw new Error(`[Client] Invalide state : ${state} `);
                         switch (value) {
@@ -81,13 +82,11 @@ export default class socketClient
     }
     setup(event)
     {
-        this.canvas.alo()
-        console.log(` [setup]  : ${Object.keys(event)}`);
-        const key = Object.keys(event)[2];
-        this.paddleSide = event[key]
-
-        console.log(` [setup] canvas | ${this.canvas}`);
-        console.log(` [setup]  : ${event[key]}`);
+      console.log(` [setup]  : ${Object.keys(event)}`);
+      const key = Object.keys(event)[2];
+      this.paddleSide = event[key]
+      console.log(` [setup]  : ${event[key]}`);
+      this.canvas.set_paddleSide(event[key])
     }
 
     sendMove(data)

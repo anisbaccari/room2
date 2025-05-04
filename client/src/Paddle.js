@@ -15,6 +15,7 @@ export  default class Paddle {
         this.x_max = 0;
         this.paddleSpeed = 1.5;
         this.side = null;
+        this.box = null
         this.init(scene, 50);
     }
     // Initialize paddles with given scene and ground width
@@ -50,24 +51,18 @@ export  default class Paddle {
         return paddle;
     }
     updatePaddlesMovement() {
-        if (this.moveUpL /* && this.leftPaddle.position.z < this.z_max - this.depth / 2 */) {
-            this.leftPaddle.position.z += this.paddleSpeed;
-        }
-        if (this.moveDownL /* && this.leftPaddle.position.z > this.z_min + this.depth / 2 */) {
-            this.leftPaddle.position.z -= this.paddleSpeed;
-        }
-        if (this.moveUpR /* && this.rightPaddle.position.z < this.z_max - this.depth / 2 */) {
-            this.rightPaddle.position.z += this.paddleSpeed;
-        }
-        if (this.moveDownR/*  && this.rightPaddle.position.z > this.z_min + this.depth / 2 */) {
-            this.rightPaddle.position.z -= this.paddleSpeed;
-        }
+
+
+        console.log('allo')
+
     }
 
     setSide(side)
     {
         this.side = side;
         console.log(`[Paddleside] : side  ${this.side}`)
+        this.box =  this.side == "R" ? this.rightPaddle :  this.leftPaddle
+        console.log(`[box] : side  ${this.box}`)
     }
     /// min - max
     setBoundaries(x_bound, z_bound) {
@@ -111,6 +106,7 @@ export  default class Paddle {
     setupInputControls() {
         // Key Press (Start Movement)
         window.addEventListener('keydown', (e) => {
+            console.log(` key pressed  ${e.key} `)
             switch (e.key) {
                 case "ArrowUp":
                     this.moveUpR = true;
@@ -150,6 +146,8 @@ export  default class Paddle {
     }
     update(key) {
         this.handler(key)
+
+        console.log(` [test]  `);
         this.updatePaddlesMovement();
     }
 }
