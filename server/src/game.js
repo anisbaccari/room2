@@ -58,7 +58,7 @@ class game {
       for( let room of this.rooms)
       {
          if(room.init())
-            room.updateBall()
+            room.loop()
       }
       
    }

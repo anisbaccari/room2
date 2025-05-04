@@ -5,6 +5,7 @@ const s_players  = require ('./s_players.js')
 class  s_rooms {
     constructor() {
         this.id = 0;
+        this.is_set = false; 
         this.length = 0;
         this.players = [];
         this.balls = [];
@@ -25,6 +26,11 @@ class  s_rooms {
             if(player.socket.readyState != 1)
                 return false; 
         }
+        if(!this.is_set)
+        {
+            this.handler();
+            this.is_set = true;
+        }
         return true;
     }
 
@@ -32,6 +38,11 @@ class  s_rooms {
     {
         this.players.push(player);
         this.length++;
+    }
+
+    loop()
+    {
+        this.updateBall(); 
     }
 
     updateBall()
@@ -81,6 +92,70 @@ class  s_rooms {
                 : `New player connected with id: ${senderPlayer.id}`;
             
             player.socket.send(JSON.stringify({ system: true, message: msg }));
+        }
+    }
+
+    sendEvent( socketid,event)
+    {
+        const key = Object.keys(event)[0];
+        const state = Object.keys(event)[1];
+        const value = event[key];
+        let resulte =false;
+        console.log(`[SendEvent] [PLAYER ${this.id}] : ${event[key]}`);
+    /*     for ( let player of this.players)
+        {
+            if( player.id != socketid)
+            {
+                player.socket.send(JSON.stringify(event));
+            }
+        } */
+    }
+
+
+
+    handler()
+    {
+        for (let player of this.players)
+        {
+            if(player.is_ready())
+            {
+                player.socket.on('message', msg => 
+                    {
+                        try
+                        {
+                            const response = JSON.parse(msg);
+                            const key = Object.keys(response)[0];
+                            const state = Object.keys(response)[1];
+                            const value = response[key];
+                            let resulte =false;
+                            console.log(` [Handler] [PLAYER ${this.id}] : ${response[key]}`);
+            
+                            if(!state)
+                                throw new Error(`[Server] Invalide state : ${state} `);
+                            
+            
+                            switch (value)
+                            {
+                                case 'Paddle':
+                                  console.log(` ==== Paddle msg : ${response["position"]}`)
+                                 player.update(response["position"])
+                                    break; 
+                                case 'ball': 
+                            //    console.log(` ==== Ball msg : ${response["position"]}`)
+                                    break; 
+                                default: 
+                                console.log(` ==== msg : ${key}`)
+                                break;
+                            }
+                            this.sendEvent(player.id,response);
+                         
+                        } catch(e)
+                        {
+                            console.error(`Invalid JSON: in:`, msg);
+                        }
+                            
+                    }) 
+            }
         }
     }
     display() {

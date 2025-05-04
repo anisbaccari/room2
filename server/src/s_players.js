@@ -31,9 +31,13 @@ class s_players
         console.log(`************** PLAYER id : ${this.id} ****************`);
     }
 
+    is_ready()
+    {
+        return (this.socket.readyState == 1)
+    }
 
     listen()
-    {    
+    {   /*  
         this.socket.on('message', msg => 
         {
             try
@@ -66,7 +70,7 @@ class s_players
                 console.error(`Invalid JSON: in:`, msg);
             }
                 
-        })
+        }) */
     }
 
     update(event)
