@@ -14,6 +14,7 @@ export  default class Paddle {
         this.x_min = 0;
         this.x_max = 0;
         this.paddleSpeed = 1.5;
+        this.side = null;
         this.init(scene, 50);
     }
     // Initialize paddles with given scene and ground width
@@ -61,6 +62,12 @@ export  default class Paddle {
         if (this.moveDownR/*  && this.rightPaddle.position.z > this.z_min + this.depth / 2 */) {
             this.rightPaddle.position.z -= this.paddleSpeed;
         }
+    }
+
+    setSide(side)
+    {
+        this.side = side;
+        console.log(`[Paddleside] : side  ${this.side}`)
     }
     /// min - max
     setBoundaries(x_bound, z_bound) {

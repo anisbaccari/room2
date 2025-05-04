@@ -9,12 +9,13 @@ export default class CanvasComponent {
             throw new Error(" no ConfigGame");
         this.container = containerId
         this.isRendering = true;
+        this.paddleSide = null;
+
+
         this.canvas = document.createElement("canvas");
         this.canvas.style.width = this.config.g_width;
         this.canvas.style.height = this.config.g_height;
         
-        /// TEST
-        console.log(` g_width : ${this.config.g_width}  g_height ${this.config.g_height} `)
         // Add the object to the page 
         
         if(this.container)
@@ -41,6 +42,19 @@ export default class CanvasComponent {
         window.addEventListener("resize", () => {
             this.engine.resize();
         });
+    }
+
+    alo()
+    {
+        console.log(`[CanvasComponent] Is Rendering: ${this.isRendering}`);
+        console.log(`[CanvasComponent] Paddle Side: ${this.paddleSide}`);
+        console.log(`[CanvasComponent] Canvas Element: ${this.canvas}`);
+        console.log(`[CanvasComponent] Scene: ${this.scene}`);
+        console.log(`[CanvasComponent] Paddle Instance: ${this.paddle}`);
+        console.log(`[CanvasComponent] Ball Instance: ${this.ball}`);
+       /*  this.paddleSide = side; 
+
+        this.paddle.setSide(this.paddleSide); */
     }
 
     updatePaddle(move)

@@ -32,7 +32,7 @@ class game {
 
    setup( socket)
    {
-      this.display();
+      //this.display();
 
       for (let i = 0; i < this.rooms.length; i++)
       {

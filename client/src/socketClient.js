@@ -8,7 +8,7 @@ export default class socketClient
         this.playerid = playerid;
         this.isRendering = true;
         this.content = document.getElementById('content') ;
-                
+        this.paddleSide = null
         if(!this.content)
           throw new Error(" no CanvasComponent");
           
@@ -45,10 +45,10 @@ export default class socketClient
                           throw new Error(`[Client] Invalide state : ${state} `);
                         switch (value) {
                           case 'init':
-                            this.setup(event.rooms);
+                            this.setup(event);
                             break;
                           case 'message':
-                            console.log(` [server] : ${event.message}`);
+                         //   console.log(` [server] : ${event.message}`);
                             break;
                           case 'player':
                             console.log(` [server] playerid : ${event.data}`);
@@ -59,8 +59,11 @@ export default class socketClient
                           case 'ball':
                             this.info();
                             let x = event.x;
-                            console.log(`[client] ball.x : ${event.x} - current_x ${event.ball_x}`);
+                       //     console.log(`[client] ball.x : ${event.x} - current_x ${event.ball_x}`);
                             this.canvas.ball.mesh.position.x += x;
+                            break;
+                          case 'move':     
+                            this.handlemove(event);
                             break;
                           default:
                             break;
@@ -76,14 +79,15 @@ export default class socketClient
                     });
           }
     }
-    setup(rooms)
+    setup(event)
     {
-      console.log(` [setup] rooms : ${rooms}`)
-      if(!rooms)
-        throw new Error("[setup]  no rooms");
-      if(!rooms.id || !rooms.players || !rooms.ball)
-        throw new Error("[setup] Invalide rooms");
-      this.rooms  = rooms;
+        this.canvas.alo()
+        console.log(` [setup]  : ${Object.keys(event)}`);
+        const key = Object.keys(event)[2];
+        this.paddleSide = event[key]
+
+        console.log(` [setup] canvas | ${this.canvas}`);
+        console.log(` [setup]  : ${event[key]}`);
     }
 
     sendMove(data)
@@ -117,6 +121,34 @@ export default class socketClient
       else 
       this.canvas.updatePaddle(paddleSpeed);
 
+    }
+
+    handlemove(event)
+    {
+    
+      
+      console.log(`[handlemove] ${Object.keys(event)}  `);
+       const {type, succes, data} = this.parsJson(event)
+      console.log(`[handlemove] ${type, succes, data}  `);
+ 
+
+    }
+
+    parsJson(event)
+    {
+      const key_type = Object.keys(event)[0];
+      const key_succes  = Object.keys(event)[1]; 
+      const key_data = Object.keys(event)[2]
+
+      const type  = event[key_type];
+      const succes  = event[key_succes];
+      const data  = event[key_data];
+      
+      if(!data || !succes || !type)
+        throw new Error(`Error parsJson ${Object.key(event)}  `);
+
+      return { type, succes, data}
+        
     }
 
     listen()

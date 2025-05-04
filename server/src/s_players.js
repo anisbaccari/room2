@@ -8,7 +8,7 @@ class s_players
         this.id = id;
         this.playground = playground;
         this.g_speedBall = this.playground.g_speedBall;
-        this.paddle =  new s_paddle( this.playground );
+        this.paddle =  new s_paddle( this.playground ,this.id);
         this.setup();
         this.listen(); 
         this.display(); 
@@ -36,6 +36,11 @@ class s_players
         return (this.socket.readyState == 1)
     }
 
+
+    paddleSide()
+    {
+        return this.paddle.paddleSide;
+    }
     listen()
     {   /*  
         this.socket.on('message', msg => 
@@ -75,7 +80,7 @@ class s_players
 
     update(event)
     {
-        console.log(` [update] event : ${event}`)
+      //  console.log(` [update] event : ${event}`)
         // check if we can 
         let res =  this.paddle.updatePaddlesMovement(event);
         this.send(res);

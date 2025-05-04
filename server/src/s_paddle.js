@@ -2,7 +2,7 @@
 class s_paddle 
 {
 
-    constructor(playground)
+    constructor(playground,playerid)
     {
         this.x  = 0; 
         this.y = 0; 
@@ -12,6 +12,8 @@ class s_paddle
         this.z_min = 0;
         this.x_min = 0;
         this.paddleSpeed = 1.5;
+        this.paddleSide = playerid % 2 == 0 ? "L" : "R";
+        console.log(` [s_paddle] paddle_side : ${this.paddleSide} `)
     }
 
     move(move)

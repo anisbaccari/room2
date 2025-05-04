@@ -38,6 +38,13 @@ class  s_rooms {
     {
         this.players.push(player);
         this.length++;
+        console.log(` [setup] PLAYER id : ${this.id} `);
+        if(player.is_ready())
+            player.socket.send(JSON.stringify({
+                type: 'init',
+                succes: true, 
+                data: player.paddleSide()
+            }))
     }
 
     loop()
@@ -95,20 +102,29 @@ class  s_rooms {
         }
     }
 
-    sendEvent( socketid,event)
+    sendEvent( playerid,event)
     {
-        const key = Object.keys(event)[0];
-        const state = Object.keys(event)[1];
-        const value = event[key];
+        const type = Object.keys(event)[0];
+        const succes = Object.keys(event)[1];
+        const key = Object.keys(event)[2]; //event[key];
+        const response = event[key]
         let resulte =false;
-        console.log(`[SendEvent] [PLAYER ${this.id}] : ${event[key]}`);
-    /*     for ( let player of this.players)
+        console.log(`[SendEvent] [PLAYER ${playerid}] : ${response}`);
+        const tosend  = {   
+            type: "move",
+            succes: true,
+            data: response,
+            opt : playerid
+        }
+        for ( let player of this.players)
         {
-            if( player.id != socketid)
+
+            if( player.id != playerid && player.is_ready())
             {
-                player.socket.send(JSON.stringify(event));
+                console.log(`[SendEvent] from [${player.id}] to [${playerid}] : ${response}`);
+                player.socket.send(JSON.stringify(tosend));
             }
-        } */
+        } 
     }
 
 
@@ -128,7 +144,7 @@ class  s_rooms {
                             const state = Object.keys(response)[1];
                             const value = response[key];
                             let resulte =false;
-                            console.log(` [Handler] [PLAYER ${this.id}] : ${response[key]}`);
+                            console.log(` [Handler] [PLAYER ${player.id}] : ${response[key]}`);
             
                             if(!state)
                                 throw new Error(`[Server] Invalide state : ${state} `);
@@ -136,15 +152,17 @@ class  s_rooms {
             
                             switch (value)
                             {
+                                case 'init' : 
+                                    break;
                                 case 'Paddle':
-                                  console.log(` ==== Paddle msg : ${response["position"]}`)
+                           //       console.log(` ==== Paddle msg : ${response["position"]}`)
                                  player.update(response["position"])
                                     break; 
                                 case 'ball': 
                             //    console.log(` ==== Ball msg : ${response["position"]}`)
                                     break; 
                                 default: 
-                                console.log(` ==== msg : ${key}`)
+                                console.log(` ==== msg : ${response}`)
                                 break;
                             }
                             this.sendEvent(player.id,response);
