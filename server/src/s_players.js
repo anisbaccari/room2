@@ -42,46 +42,11 @@ class s_players
         return this.paddle.paddleSide;
     }
     listen()
-    {   /*  
-        this.socket.on('message', msg => 
-        {
-            try
-            {
-                const response = JSON.parse(msg);
-                const key = Object.keys(response)[0];
-                const state = Object.keys(response)[1];
-                const value = response[key];
-                let resulte =false;
-                console.log(` [PLAYER ${this.id}] : ${response[key]}`);
-
-                if(!state)
-                    throw new Error(`[Server] Invalide state : ${state} `);
-
-                switch (value)
-                {
-                    case 'Paddle':
-                      console.log(` ==== Paddle msg : ${response["position"]}`)
-                     this.update(response["position"])
-                        break; 
-                    case 'ball': 
-                    console.log(` ==== Ball msg : ${response["position"]}`)
-                        break; 
-                    default: 
-                    console.log(` ==== msg : ${key}`)
-                    break;
-                }
-            } catch(e)
-            {
-                console.error(`Invalid JSON: in:`, msg);
-            }
-                
-        }) */
+    {   
     }
 
     update(event)
     {
-      //  console.log(` [update] event : ${event}`)
-        // check if we can 
         let res =  this.paddle.updatePaddlesMovement(event);
         this.send(res);
     }
@@ -98,16 +63,17 @@ class s_players
                 
             })))
         else
+        {
+
             this.socket.send((JSON.stringify(
-            {   
-            
-                type: "Paddle",
-                succes: false,
-                data: 0
-            
-            })))
+                {   
+                    type: "Paddle",
+                    succes: false,
+                    data: 0
+                    
+                })))       
+        }
     
-        console.log(` send : REsulte : ${resulte}`);
 
     }
 }

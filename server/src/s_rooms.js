@@ -106,33 +106,54 @@ class  s_rooms {
         }
     }
 
+    getOpt(event)
+    {
+        try {
+/*             const key_opt = Object.keys(event)[3];
+            const opt  = event[key_opt];
+            return opt */
+
+            console.log(` [SendEvent] opt : ${ Object.keys(event)}`) ;
+            
+         } catch (error) {
+           console.error(`Cant acces opt`);
+         }
+    }
+
     sendEvent( playerid,event)
     {
-        const type = Object.keys(event)[0];
+        const key_type = Object.keys(event)[0];
+        const type = event[key_type]
         const succes = Object.keys(event)[1];
-        const key = Object.keys(event)[2]; //event[key];
+        const key = Object.keys(event)[2]; 
         const response = event[key]
         let resulte =false;
-        console.log(`[SendEvent] [PLAYER ${playerid}] : ${response}`);
+
+        console.log(`[SendEvent] [PLAYER ${playerid}] (type) ${type} :  ${response}`);
+
+/*         if(response == "move")
+            console.log(` [SendEvent] opt : ${this.getOpt(event)}`) ;
+ */
         const tosend  = {   
             type: "move",
             succes: true,
             data: response,
             opt : playerid
         }
+
+        console.log(` \x1b[31m%s\x1b[0m`,` [SENDMOVE] ${tosend["type"]} `)
         for ( let player of this.players)
         {
-
             if( player.id != playerid && player.is_ready())
             {
-                console.log(`[SendEvent] from [${player.id}] to [${playerid}] : ${response}`);
+                console.log(`[SendEvent] from [${playerid}] to [${player.id}] : ${response}`);
                 player.socket.send(JSON.stringify(tosend));
             }
         } 
     }
 
 
-
+        /// HAndle socket message receveid
     handler()
     {
         for (let player of this.players)
@@ -148,7 +169,7 @@ class  s_rooms {
                             const state = Object.keys(response)[1];
                             const value = response[key];
                             let resulte =false;
-                            console.log(` [Handler] [PLAYER ${player.id}] : ${response[key]}`);
+                            console.log(` [Handler] [PLAYER ${player.id}]  get :  ${response[key]}`);
             
                             if(!state)
                                 throw new Error(`[Server] Invalide state : ${state} `);
@@ -158,9 +179,12 @@ class  s_rooms {
                             {
                                 case 'init' : 
                                     break;
+                                case 'move' :
+                                console.log(` [move] : ${ Object.keys(response)[2]}`)
+                                    break;
                                 case 'Paddle':
                            //       console.log(` ==== Paddle msg : ${response["position"]}`)
-                                 player.update(response["position"])
+                                 player.update(response["data"])
                                     break; 
                                 case 'ball': 
                             //    console.log(` ==== Ball msg : ${response["position"]}`)
@@ -171,7 +195,8 @@ class  s_rooms {
                             }
                             this.sendEvent(player.id,response);
                          
-                        } catch(e)
+                        } 
+                        catch(e)
                         {
                             console.error(`Invalid JSON: in:`, msg);
                         }

@@ -89,24 +89,40 @@ export default class socketClient
       this.canvas.set_paddleSide(event[key])
     }
 
-    sendMove(data)
+    sendMove(data) // send to other 
     {
-      console.log(`[client] sendMove : ${data.key}`)
-        if(this.ws.readyState  == 1)
-        {
-          this.ws.send(JSON.stringify(
-            {
-            event: "Paddle",
-            succes: true,
-            position: data.key
-            }));
+      console.log(`[client] [${this.playerid}] sendMove : ${data.key}`)
 
+      switch (data.key) {
+        case "ArrowUp":
+        case "ArrowDown":
+        case "W":
+        case "w":
+        case "S":
+        case "s":
+          if(this.ws.readyState  == 1)
+            {
+              this.ws.send(JSON.stringify(
+                {
+                event: "Paddle",
+                succes: true,
+                data: data.key,
+                opt: this.playerid
+                }));
+    
+            
+            } else 
+              console.log("[client] sendMove : socket not ready")
+          break;
+        default:
+          break;
+      }
+
+      console.log(` [client] sendMove : ${data.key}`)
         
-        } else 
-          console.log("[client] sendMove : socket not ready")
     }
 
-    updateMove(event)
+    updateMove(event) // send to other 
     {
       console.log(` [SERVER] FOR PADDLE : ${Object.keys(event)}`)
    
@@ -122,13 +138,22 @@ export default class socketClient
 
     }
 
-    handlemove(event)
+    handlemove(event) //
     {
     
       
       console.log(`[handlemove] ${Object.keys(event)}  `);
        const {type, succes, data} = this.parsJson(event)
-      console.log(`[handlemove] ${type, succes, data}  `);
+       
+       try {
+         const key_opt = Object.keys(event)[3];
+         const opt  = event[key_opt];
+         console.log(`[handlemove] from ${opt} to ${this.playerid}  `);
+         console.log(`[handlemove] data : ${data}  `);
+
+      } catch (error) {
+        console.error(`Cant acces opt`);
+      }
  
 
     }
@@ -155,7 +180,9 @@ export default class socketClient
       window.addEventListener("keydown", (event) =>
       {
         
-        this.sendMove(event);
+        this.sendMove(event); // to othher & server 
+
+
         if (event.key === "p") 
         { // Press 'p' to pause/unpause
           this.isRendering = !this.isRendering;

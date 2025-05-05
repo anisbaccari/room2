@@ -20,7 +20,7 @@ class s_paddle
     {
 
     }
-
+        // from client to server
     updatePaddlesMovement(key) 
     {
  
