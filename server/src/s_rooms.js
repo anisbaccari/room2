@@ -14,9 +14,6 @@ class  s_rooms {
         this.current_x = 0 ;
         this.dx  =  Math.random() < 0.5 ? 20 : -20
     }
-
-
-
     init()
     {
         if(this.players.length !=2)
@@ -108,16 +105,12 @@ class  s_rooms {
 
     getOpt(event)
     {
-        try {
-/*             const key_opt = Object.keys(event)[3];
-            const opt  = event[key_opt];
-            return opt */
-
+        try 
+        {
             console.log(` [SendEvent] opt : ${ Object.keys(event)}`) ;
-            
-         } catch (error) {
+        } catch (error) {
            console.error(`Cant acces opt`);
-         }
+        }
     }
 
     sendEvent( playerid,event)
@@ -131,9 +124,6 @@ class  s_rooms {
 
         console.log(`[SendEvent] [PLAYER ${playerid}] (type) ${type} :  ${response}`);
 
-/*         if(response == "move")
-            console.log(` [SendEvent] opt : ${this.getOpt(event)}`) ;
- */
         const tosend  = {   
             type: "move",
             succes: true,
@@ -174,7 +164,6 @@ class  s_rooms {
                             if(!state)
                                 throw new Error(`[Server] Invalide state : ${state} `);
                             
-            
                             switch (value)
                             {
                                 case 'init' : 
@@ -183,12 +172,10 @@ class  s_rooms {
                                 console.log(` [move] : ${ Object.keys(response)[2]}`)
                                     break;
                                 case 'Paddle':
-                           //       console.log(` ==== Paddle msg : ${response["position"]}`)
                                  player.update(response["data"])
                                     break; 
                                 case 'ball': 
-                            //    console.log(` ==== Ball msg : ${response["position"]}`)
-                                    break; 
+                                break; 
                                 default: 
                                 console.log(` ==== msg : ${response}`)
                                 break;

@@ -17,23 +17,12 @@ class game {
 
    init()
    {
-     /*  this.display();
-      this.rooms.forEach( room => 
-      {
-            if(room.length < 2 )
-            {
-              let newplayer = new s_players(0)
-               room.setup(newplayer); 
-               console.log("*********** NEW PLAYERS ADDED")
-            }
-      }) */
+
    
    }
 
    setup( socket)
    {
-      //this.display();
-
       for (let i = 0; i < this.rooms.length; i++)
       {
          let room = this.rooms[i];
@@ -50,7 +39,6 @@ class game {
             else 
             this.rooms.push(new s_rooms()); 
       }
-        
    }
 
    loop( )
@@ -62,8 +50,6 @@ class game {
       }
       
    }
-
-
    broadcast(socket)
    {
       const socketid = this.rooms.getsocket(socket); 
@@ -72,7 +58,6 @@ class game {
 
       }
    }
-
    getsocket(socket)
    {
       for( let room of this.rooms)

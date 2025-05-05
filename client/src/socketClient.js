@@ -15,11 +15,7 @@ export default class socketClient
         this.canvas = new CanvasComponent(content,cfg);
         this.init(URL);
         this.listen();
-
-        
-
     }
-
 
     init(URL)
     {
@@ -49,7 +45,6 @@ export default class socketClient
                             this.setup(event);
                             break;
                           case 'message':
-                         //   console.log(` [server] : ${event.message}`);
                             break;
                           case 'player':
                             console.log(` [server] playerid : ${event.data}`);
@@ -60,7 +55,6 @@ export default class socketClient
                           case 'ball':
                             this.info();
                             let x = event.x;
-                       //     console.log(`[client] ball.x : ${event.x} - current_x ${event.ball_x}`);
                             this.canvas.ball.mesh.position.x += x;
                             break;
                           case 'move':     
@@ -73,8 +67,6 @@ export default class socketClient
                         console.error(`Invalid JSON in:`, msg);
                       }
                     });
-
-                
                     this.ws.addEventListener('close', () => {
                     console.log(`disconnected`);
                     });
@@ -118,8 +110,7 @@ export default class socketClient
           break;
       }
 
-      console.log(` [client] sendMove : ${data.key}`)
-        
+      console.log(` [client] sendMove : ${data.key}`) 
     }
 
     updateMove(event) // send to other 
@@ -135,7 +126,6 @@ export default class socketClient
         return; 
       else 
       this.canvas.updatePaddle(paddleSpeed);
-
     }
 
     handlemove(event) //
@@ -154,8 +144,6 @@ export default class socketClient
       } catch (error) {
         console.error(`Cant acces opt`);
       }
- 
-
     }
 
     parsJson(event)

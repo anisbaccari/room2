@@ -17,7 +17,6 @@ class s_players
 
     setup()
     {
-
         this.socket.send((JSON.stringify(
             {   
                 type: "player",
@@ -41,10 +40,6 @@ class s_players
     {
         return this.paddle.paddleSide;
     }
-    listen()
-    {   
-    }
-
     update(event)
     {
         let res =  this.paddle.updatePaddlesMovement(event);
@@ -53,7 +48,6 @@ class s_players
 
     send(resulte)
     {
-
         if(resulte && this.socket.readyState ===1)
             this.socket.send((JSON.stringify(
             {   
@@ -64,17 +58,13 @@ class s_players
             })))
         else
         {
-
             this.socket.send((JSON.stringify(
-                {   
-                    type: "Paddle",
-                    succes: false,
-                    data: 0
-                    
-                })))       
+            {   
+                type: "Paddle",
+                succes: false,
+                data: 0   
+            })))       
         }
-    
-
     }
 }
 
