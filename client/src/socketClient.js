@@ -113,7 +113,7 @@ export default class socketClient
       console.log(` [client] sendMove : ${data.key}`) 
     }
 
-    updateMove(event) // send to other 
+    updateMove(event) // receive from server  
     {
       console.log(` [SERVER] FOR PADDLE : ${Object.keys(event)}`)
    
@@ -128,7 +128,7 @@ export default class socketClient
       this.canvas.updatePaddle(paddleSpeed);
     }
 
-    handlemove(event) //
+    handlemove(event) // move other paddle 
     {
     
       

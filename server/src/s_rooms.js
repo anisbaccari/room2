@@ -174,12 +174,12 @@ class  s_rooms {
                                 case 'Paddle':
                                  player.update(response["data"])
                                     break; 
-                                case 'ball': 
-                                break; 
                                 default: 
                                 console.log(` ==== msg : ${response}`)
                                 break;
                             }
+
+                            console.log(` \x1b[31m%s\x1b[0m`,` [HANDLER] ${value} `)
                             this.sendEvent(player.id,response);
                          
                         } 

@@ -10,7 +10,6 @@ class s_players
         this.g_speedBall = this.playground.g_speedBall;
         this.paddle =  new s_paddle( this.playground ,this.id);
         this.setup();
-        this.listen(); 
         this.display(); 
     }   
 
