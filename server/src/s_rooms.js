@@ -178,6 +178,7 @@ class  s_rooms {
                             }
 
                             console.log(` \x1b[31m%s\x1b[0m`,` [HANDLER] ${value} `)
+                            // need to handle the validation of the response 
                             this.sendEvent(player.id,response);
                          
                         } 

@@ -51,6 +51,17 @@ export  default class Paddle {
         paddle.position = new BABYLON.Vector3(positionX, 0, 0);
         return paddle;
     }
+
+    displayPosition()
+    {
+
+        console.log(`Posiiton :  ${this.box.position.z }`)
+    }
+    displayOtherPosition()
+    {
+        
+        console.log(`OtherPosiiton :  ${this.otherBox.position.z }`)
+    }
     updatePaddlesMovement() {
 
 
@@ -60,7 +71,7 @@ export  default class Paddle {
         if (this.moveBoxDown /* && this.leftPaddle.position.z > this.z_min + this.depth / 2 */) {
             this.box.position.z -= this.paddleSpeed;
         }
-   
+        this.displayPosition()
 
     }
 
@@ -71,16 +82,17 @@ export  default class Paddle {
             this.otherBox.position.z+=this.paddleSpeed;
         else 
             this.otherBox.position.z-=this.paddleSpeed;
+        this.displayOtherPosition();
 
     }
 
     setSide(side)
     {
         this.side = side;
-        console.log(`[Paddleside] : side  ${this.side}`)
+      //  console.log(`[Paddleside] : side  ${this.side}`)
         this.box =  this.side == "R" ? this.rightPaddle :  this.leftPaddle
         this.otherBox = this.side == "R" ? this.leftPaddle :  this.rightPaddle
-        console.log(`[box] : side  ${this.box}`)
+     //   console.log(`[box] : side  ${this.box}`)
     }
     /// min - max
     setBoundaries(x_bound, z_bound) {

@@ -11,7 +11,7 @@ export default class Ball {
   
     }
     display() {
-        console.log("Ball :", this.mesh.position);
+   //     console.log("Ball :", this.mesh.position);
     }
     update(ballVector) {
         if (!ballVector)

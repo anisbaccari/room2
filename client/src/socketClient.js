@@ -37,7 +37,7 @@ export default class socketClient
                         const state = Object.keys(event)[1];
                         const value = event[key]
                         
-                        console.log(` [server] event: ${Object.keys(event)}`);
+                 //       console.log(` [server] event: ${Object.keys(event)}`);
                         if( state == "error")
                           throw new Error(`[Client] Invalide state : ${state} `);
                         switch (value) {
@@ -47,7 +47,7 @@ export default class socketClient
                           case 'message':
                             break;
                           case 'player':
-                            console.log(` [server] playerid : ${event.data}`);
+                          //  console.log(` [server] playerid : ${event.data}`);
                             break;
                           case 'Paddle':
                             this.updateMove(event)
@@ -115,13 +115,13 @@ export default class socketClient
 
     updateMove(event) // receive from server  
     {
-      console.log(` [SERVER] FOR PADDLE : ${Object.keys(event)}`)
+    //  console.log(` [SERVER] FOR PADDLE : ${Object.keys(event)}`)
    
       
       const state =event["succes"];
       const paddleSpeed = event["data"]; 
 
-      console.log(` [SERVER] FOR PADDLE  (State) : ${state}  ${paddleSpeed} `)
+     // console.log(` [SERVER] FOR PADDLE  (State) : ${state}  ${paddleSpeed} `)
       if(!state)
         return; 
       else 
@@ -157,8 +157,8 @@ export default class socketClient
        {
             const key_opt = Object.keys(event)[3];
             const opt  = event[key_opt];
-            console.log(`[handlemove] from ${opt} to ${this.playerid}  `);
-            console.log(`[handlemove] data : ${data}  `);
+       //     console.log(`[handlemove] from ${opt} to ${this.playerid}  `);
+       //     console.log(`[handlemove] data : ${data}  `);
             this.updateOthemove(data); 
       }
        catch (error) {
