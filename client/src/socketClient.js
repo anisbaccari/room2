@@ -128,6 +128,24 @@ export default class socketClient
       this.canvas.updatePaddle(paddleSpeed);
     }
 
+    updateOthemove(event)
+    {
+      console.log(`[updateOthermove] ${event}  `);
+
+      switch (event) {
+        case 'ArrowUp':
+          this.canvas.updateOtherPaddle(true)
+          break;
+        case 'ArrowDown':
+          this.canvas.updateOtherPaddle(false)
+          break;
+        default:
+          console.log(`[updateOthermove] undefined key  ${event}  `);
+          break;
+      }
+    
+    }
+
     handlemove(event) // move other paddle 
     {
     
@@ -135,13 +153,15 @@ export default class socketClient
       console.log(`[handlemove] ${Object.keys(event)}  `);
        const {type, succes, data} = this.parsJson(event)
        
-       try {
-         const key_opt = Object.keys(event)[3];
-         const opt  = event[key_opt];
-         console.log(`[handlemove] from ${opt} to ${this.playerid}  `);
-         console.log(`[handlemove] data : ${data}  `);
-
-      } catch (error) {
+       try 
+       {
+            const key_opt = Object.keys(event)[3];
+            const opt  = event[key_opt];
+            console.log(`[handlemove] from ${opt} to ${this.playerid}  `);
+            console.log(`[handlemove] data : ${data}  `);
+            this.updateOthemove(data); 
+      }
+       catch (error) {
         console.error(`Cant acces opt`);
       }
     }

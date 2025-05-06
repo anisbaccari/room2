@@ -60,12 +60,17 @@ export  default class Paddle {
         if (this.moveBoxDown /* && this.leftPaddle.position.z > this.z_min + this.depth / 2 */) {
             this.box.position.z -= this.paddleSpeed;
         }
-        if (this.moveOtherUp /* && this.rightPaddle.position.z < this.z_max - this.depth / 2 */) {
-            this.otherBox.position.z += this.paddleSpeed;
-        }
-        if (this.moveOtherDown/*  && this.rightPaddle.position.z > this.z_min + this.depth / 2 */) {
-            this.otherBox.position.z -= this.paddleSpeed;
-        }
+   
+
+    }
+
+    updateOtherPaddleMovement(direction)
+    {
+        // direction : true = up 
+        if(direction)
+            this.otherBox.position.z+=this.paddleSpeed;
+        else 
+            this.otherBox.position.z-=this.paddleSpeed;
 
     }
 

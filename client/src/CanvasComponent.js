@@ -57,6 +57,11 @@ export default class CanvasComponent {
         console.log(`[ [CanvasCompenent] : ${move}`)
         this.paddle.update(move);
     }
+    updateOtherPaddle(move)
+    {
+        console.log(`[ [CanvasCompenent] : ${move}`)
+        this.paddle.updateOtherPaddleMovement(move);
+    }
     run() {
         // Start the render loop initially
         if (this.isRendering) {

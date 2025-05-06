@@ -52,8 +52,6 @@ class  s_rooms {
     updateBall()
     {
     
-      
-        
         if( this.current_x   < this.left_bound || this.current_x   > this.right_bound)
             {
                 this.dx = -this.dx; 
@@ -131,7 +129,7 @@ class  s_rooms {
             opt : playerid
         }
 
-        console.log(` \x1b[31m%s\x1b[0m`,` [SENDMOVE] ${tosend["type"]} `)
+        console.log(` \x1b[31m%s\x1b[0m`,` [SENDMOVE] ${tosend["type"]} from ${playerid} `)
         for ( let player of this.players)
         {
             if( player.id != playerid && player.is_ready())
