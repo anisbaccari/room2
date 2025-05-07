@@ -50,20 +50,20 @@ class  s_rooms {
         this.updateBall(); 
     }
 
-    check_z_position()
-    {
-        /// may be go through an Array of Z position  ...
-        for(let  player of this.players)
-        {
-
-            console.log(` \x1b[31m%s\x1b[0m`, `id ${player.id}  current_x ${this.current_x} - player.get_pos_z ${player.get_pos_z()}`)
-
-            if( this.current_x == player.get_pos_z())
-                return true;
+    checkPaddleCollision() {
+        for (let player of this.players) {
+            if (this.ball.intersects(player.paddle)) {
+                this.dx = -this.dx;
+                console.log(`[COLLISION] Ball hit paddle of player ${player.id}`);
+                console.log(`[COLLISION] Ball  `);
+                this.ball.display()
+                console.log(`[COLLISION] player  ${player.get_pos_z()}`);
+                break;
+            }
         }
-        return false; 
     }
-
+    
+ 
     updateBall()
     {
     
@@ -79,7 +79,8 @@ class  s_rooms {
         else    
             this.current_x += this.dx;
         
-        this.check_z_position();
+        this.display()
+        this.checkPaddleCollision();
         this.players.forEach( player => 
         { 
     
@@ -212,7 +213,10 @@ class  s_rooms {
         console.log(`s_rooms id: ${this.id}`);
         let count = 0;
         this.players.forEach(player => {
-            console.log(`index[${count++}] : players_id : ${player.id} - paddle: ${player.paddle}`);
+            console.log(`index[${count++}] : players_id : ${player.id} - paddle: `);
+            player.paddle.display()
+            console.log(" BALL")
+            this.ball.display()
         });
     }
 };

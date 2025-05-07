@@ -2,23 +2,42 @@
 class s_paddle 
 {
 
-    constructor(playground,playerid)
-    {
-        this.x  = 0; 
-        this.y = 0; 
+    constructor(playground, playerid) {
+        this.x = 0;
+        this.y = 0;
         this.z = 0;
+
+        this.width = 2;
+        this.height = 10;
+        this.depth = 20;
+
         this.z_max = playground.g_width;
         this.x_max = playground.g_deepth;
         this.z_min = 0;
         this.x_min = 0;
+
         this.paddleSpeed = 1.5;
         this.paddleSide = playerid % 2 == 0 ? "L" : "R";
-        console.log(` [s_paddle] paddle_side : ${this.paddleSide} `)
+        console.log(` [s_paddle] paddle_side : ${this.paddleSide} `);
     }
 
-    move(move)
-    {
+    getBoundingBox() {
+        return {
+            position: { x: this.x, y: this.y, z: this.z },
+            size: { width: this.width, height: this.height, depth: this.depth }
+        };
+    }
 
+    // Check AABB collision with another bounding box (e.g., the ball)
+    intersects(other) {
+        const a = this.getBoundingBox();
+        const b = other.getBoundingBox();
+
+        return (
+            Math.abs(a.position.x - b.position.x) < (a.size.width / 2 + b.size.width / 2) &&
+            Math.abs(a.position.y - b.position.y) < (a.size.height / 2 + b.size.height / 2) &&
+            Math.abs(a.position.z - b.position.z) < (a.size.depth / 2 + b.size.depth / 2)
+        );
     }
         // from client to server
     updatePaddlesMovement(key) 
@@ -67,7 +86,7 @@ class s_paddle
                 return true
             }
         }
-        this.display()
+    //    this.display()
         
         return false;
     }
