@@ -1,5 +1,5 @@
 
-const s_ball = require ('./s_ball.js')
+const { s_ball } = require ('./s_ball.js')
 const s_players  = require ('./s_players.js')
 
 class  s_rooms {
@@ -9,6 +9,7 @@ class  s_rooms {
         this.length = 0;
         this.players = [];
         this.balls = [];
+        this.ball = new s_ball(0)
         this.left_bound = -60 ;
         this.right_bound = 60 ;
         this.current_x = 0 ;
@@ -49,21 +50,36 @@ class  s_rooms {
         this.updateBall(); 
     }
 
+    check_z_position()
+    {
+        /// may be go through an Array of Z position  ...
+        for(let  player of this.players)
+        {
+
+            console.log(` \x1b[31m%s\x1b[0m`, `id ${player.id}  current_x ${this.current_x} - player.get_pos_z ${player.get_pos_z()}`)
+
+            if( this.current_x == player.get_pos_z())
+                return true;
+        }
+        return false; 
+    }
+
     updateBall()
     {
     
-        if( this.current_x   < this.left_bound || this.current_x   > this.right_bound)
-            {
+        if( this.ball.interBound(this.current_x))
+        {
                 this.dx = -this.dx; 
                 this.current_x += this.dx; 
                 console.log(`== BOUND : 
                   current_x  ${this.current_x} 
                   left_bound  ${this.left_bound} 
                   right_bound  ${this.right_bound} `);
-            }
+        }
         else    
             this.current_x += this.dx;
         
+        this.check_z_position();
         this.players.forEach( player => 
         { 
     
@@ -111,15 +127,16 @@ class  s_rooms {
         }
     }
 
-    sendEvent( playerid,event)
+    sendEvent( playerid,event,resulte)
     {
+
+        if(!resulte)
+                return;
         const key_type = Object.keys(event)[0];
         const type = event[key_type]
         const succes = Object.keys(event)[1];
         const key = Object.keys(event)[2]; 
         const response = event[key]
-        let resulte =false;
-
         console.log(`[SendEvent] [PLAYER ${playerid}] (type) ${type} :  ${response}`);
 
         const tosend  = {   
@@ -170,7 +187,7 @@ class  s_rooms {
                                 console.log(` [move] : ${ Object.keys(response)[2]}`)
                                     break;
                                 case 'Paddle':
-                                 player.update(response["data"])
+                                resulte =  player.update(response["data"])
                                     break; 
                                 default: 
                                 console.log(` ==== msg : ${response}`)
@@ -179,7 +196,7 @@ class  s_rooms {
 
                             console.log(` \x1b[31m%s\x1b[0m`,` [HANDLER] ${value} `)
                             // need to handle the validation of the response 
-                            this.sendEvent(player.id,response);
+                            this.sendEvent(player.id,response,resulte);
                          
                         } 
                         catch(e)

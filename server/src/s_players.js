@@ -9,6 +9,7 @@ class s_players
         this.playground = playground;
         this.g_speedBall = this.playground.g_speedBall;
         this.paddle =  new s_paddle( this.playground ,this.id);
+        this.current_x = 0 ;
         this.setup();
         this.display(); 
     }   
@@ -39,10 +40,17 @@ class s_players
     {
         return this.paddle.paddleSide;
     }
+
+    get_pos_z()
+    {
+        return this.paddle.z; 
+    }
+    
     update(event)
     {
         let res =  this.paddle.updatePaddlesMovement(event);
         this.send(res);
+        return res;
     }
 
     send(resulte)
