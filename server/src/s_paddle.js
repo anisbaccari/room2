@@ -6,6 +6,8 @@ class s_paddle
         this.x = 0;
         this.y = 0;
         this.z = 0;
+        //vector3D
+        this.position = {x: this.x, y: this.y, z: this.z}
 
         this.width = 2;
         this.height = 10;
@@ -22,11 +24,15 @@ class s_paddle
     }
 
     getBoundingBox() {
+
+
+    
+
         return {
             position: { x: this.x, y: this.y, z: this.z },
             size: { width: this.width, height: this.height, depth: this.depth }
         };
-    }
+    } 
 
     // Check AABB collision with another bounding box (e.g., the ball)
     intersects(other) {
@@ -35,7 +41,7 @@ class s_paddle
 
         return (
             Math.abs(a.position.x - b.position.x) < (a.size.width / 2 + b.size.width / 2) &&
-            Math.abs(a.position.y - b.position.y) < (a.size.height / 2 + b.size.height / 2) &&
+           /*  Math.abs(a.position.y - b.position.y) < (a.size.height / 2 + b.size.height / 2) && */
             Math.abs(a.position.z - b.position.z) < (a.size.depth / 2 + b.size.depth / 2)
         );
     }

@@ -52,22 +52,22 @@ class  s_rooms {
 
     checkPaddleCollision() {
         for (let player of this.players) {
+
             if (this.ball.intersects(player.paddle)) {
                 this.dx = -this.dx;
                 console.log(`[COLLISION] Ball hit paddle of player ${player.id}`);
-                console.log(`[COLLISION] Ball  `);
-                this.ball.display()
-                console.log(`[COLLISION] player  ${player.get_pos_z()}`);
-                break;
+             //   console.log(`[COLLISION] player  ${player.get_pos_z()}`);
+                return  this.dx ; 
             }
         }
+        return  this.dx ; 
     }
     
  
     updateBall()
     {
     
-        if( this.ball.interBound(this.current_x))
+/*         if( this.ball.interBound(this.current_x))
         {
                 this.dx = -this.dx; 
                 this.current_x += this.dx; 
@@ -77,10 +77,14 @@ class  s_rooms {
                   right_bound  ${this.right_bound} `);
         }
         else    
-            this.current_x += this.dx;
+            this.current_x += this.dx; */
         
-        this.display()
-        this.checkPaddleCollision();
+        //this.display()
+        
+
+        this.ball.move();
+        this.current_x += this.checkPaddleCollision();
+        console.log( `current_x : ${this.current_x} ` )
         this.players.forEach( player => 
         { 
     

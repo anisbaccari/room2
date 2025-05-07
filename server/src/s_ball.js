@@ -17,6 +17,7 @@
     }
 
     getBoundingBox() {
+        
         return {
             position: { x: this.x, y: this.y, z: this.z },
             size: { width: this.width, height: this.height, depth: this.depth }
@@ -27,17 +28,24 @@
         const a = this.getBoundingBox();
         const b = other.getBoundingBox();
 
+
+        
+        other.display()
+        console.log(`[intersecte] {a} x : ${a.position.x}  - z : ${a.position.z}` )
+        console.log(`[intersecte] {b} x : ${b.position.x}  - z : ${b.position.z}` )
         return (
-            Math.abs(a.position.x - b.position.x) < (a.size.width / 2 + b.size.width / 2) &&
-            Math.abs(a.position.y - b.position.y) < (a.size.height / 2 + b.size.height / 2) &&
+/*             Math.abs(a.position.x - b.position.x) < (a.size.width / 2 + b.size.width / 2) &&
+            Math.abs(a.position.y - b.position.y) < (a.size.height / 2 + b.size.height / 2) && */
             Math.abs(a.position.z - b.position.z) < (a.size.depth / 2 + b.size.depth / 2)
         );
     }
 
     // Update position logic (example)
     move() {
+        
         this.x += this.dx;
         this.z += this.dz;
+        console.log(` x : ${this.x} -  z ${this.z} `);  
     }
 
     interBound(position)
