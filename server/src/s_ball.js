@@ -1,7 +1,7 @@
  class  s_ball {
 
 
-    constructor(id) {
+    constructor(id,) {
         this.id = id;
         this.x = 0;
         this.y = 0;
@@ -11,9 +11,23 @@
         this.height = 2;
         this.depth = 2;
 
+        this.left_bound = -100 - this.width / 2;
+        this.right_bound = 100 + this.width / 2;
+
+        this.playground = null
         this.dx = 1; // movement direction
         this.dz = 1;
         this.display()
+    }
+
+    setGround(playground)
+    {
+        this.playground = playground;
+        console.log(`[Ball] g_width: ${playground}`)
+        console.log(`[Ball] g_height: ${this.playground.g_height}`);
+        console.log(`[Ball] nbPlayers: ${this.playground.nbPlayers}`);
+        console.log(`[Ball] width_bound: ${this.playground.width_bound}`);
+        console.log(`[Ball] height_bound: ${this.playground.height_bound}`);
     }
 
     getBoundingBox() {
@@ -41,17 +55,19 @@
     }
 
     // Update position logic (example)
-    move() {
+    move(dx) {
         
-        this.x += this.dx;
-        this.z += this.dz;
         console.log(` x : ${this.x} -  z ${this.z} `);  
+        this.x += dx;
+      //  this.z += this.dz;
     }
 
     interBound(position)
     {
+
+        console.log(` \x1b[31m%s\x1b[0m`,` BALL x ${this.x} `);  
         this.x = position
-        if(  this.x   < this.left_bound || this.x   > this.right_bound )
+        if(  this.x   < this.left_bound || this.x   >= this.right_bound )
             return true; 
         else 
             return false; 
@@ -59,7 +75,8 @@
     display() 
     {
         console.log(` \x1b[31m%s\x1b[0m`,` BALL ID ${this.id} `);  
-        console.log(` x : ${this.x} -  z ${this.z} `);  
+        console.log(` x : ${this.x} -  z ${this.z} `); 
+      //  console.log(` playground { width : ${this.playground.g_width} -  depth : ${this.playground.g_deepth} `); 
     }
 
 }

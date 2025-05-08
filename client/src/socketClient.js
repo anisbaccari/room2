@@ -23,12 +23,8 @@ export default class socketClient
          
       this.ws.onopen = () => 
           {
-   
-             this.ws.send(JSON.stringify({
-                  type: "greeting",
-                  succes: true,
-                  data: "Hello from the frontend!"
-              }));
+
+
                   this.ws.addEventListener('message', (msg) => 
                     {
                       try {
@@ -44,6 +40,9 @@ export default class socketClient
                           case 'init':
                             this.setup(event);
                             break;
+                          case 'ready':
+                              this.sendReady();
+                              break;
                           case 'message':
                             break;
                           case 'player':
@@ -79,8 +78,24 @@ export default class socketClient
       this.paddleSide = event[key]
       console.log(` [setup]  : ${event[key]}`);
       this.canvas.set_paddleSide(event[key])
+     
     }
 
+    sendReady()
+    {
+      if (this.ws.readyState === 1) {
+        this.ws.send(JSON.stringify(
+          {
+            event: "ready",
+            succes: true,
+            data: this.canvas.config
+          }
+        ));
+      } else {
+        console.error("WebSocket is not ready to send messages.");
+      }
+        console.log(`[Client - init ] send  : ${Object.keys(this.canvas.config)} `);
+    }
     sendMove(data) // send to other 
     {
       console.log(`[client] [${this.playerid}] sendMove : ${data.key}`)

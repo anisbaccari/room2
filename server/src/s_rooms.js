@@ -9,11 +9,12 @@ class  s_rooms {
         this.length = 0;
         this.players = [];
         this.balls = [];
-        this.ball = new s_ball(0)
-        this.left_bound = -60 ;
-        this.right_bound = 60 ;
+        this.ball = null
+        this.playground = null
+        this.left_bound = -65 ;
+        this.right_bound = 65 ;
         this.current_x = 0 ;
-        this.dx  =  Math.random() < 0.5 ? 20 : -20
+        this.dx  =  Math.random() < 0.5 ? 5 : -5
     }
     init()
     {
@@ -26,7 +27,9 @@ class  s_rooms {
         }
         if(!this.is_set)
         {
-            this.handler();
+            this.ball = new s_ball(this.id)
+            //this.handler();
+            this.sendReady()
             this.is_set = true;
         }
         return true;
@@ -37,6 +40,7 @@ class  s_rooms {
         this.players.push(player);
         this.length++;
         console.log(` [setup] PLAYER id : ${this.id} `);
+        this.handler()
         if(player.is_ready())
             player.socket.send(JSON.stringify({
                 type: 'init',
@@ -45,6 +49,29 @@ class  s_rooms {
             }))
     }
 
+
+    setGround(event)
+    {
+        
+
+      try {
+            if (!event.data) throw new Error("Missing 'data' in event");
+    
+            const data = event.data;
+  
+            console.log(`[setGround] g_width: ${data.g_width}`);
+            console.log(`[setGround] g_height: ${data.g_height}`);
+            console.log(`[setGround] nbPlayers: ${data.nbPlayers}`);
+            console.log(`[setGround] width_bound: ${data.width_bound}`);
+            console.log(`[setGround] height_bound: ${data.height_bound}`);
+            this.ball.setGround(data)
+            
+            // If needed, store or process this data here
+    
+        } catch (error) {
+            console.error(`[setGround] Error accessing data: ${error}`);
+        } 
+    }
     loop()
     {
         this.updateBall(); 
@@ -63,7 +90,20 @@ class  s_rooms {
         return  this.dx ; 
     }
     
- 
+    checkGroundCollision()
+    {
+        if( this.ball.interBound(this.current_x))
+            {
+                    this.dx = -this.dx; 
+                    this.current_x += this.dx; 
+                    console.log(`== BOUND : 
+                      current_x  ${this.current_x} 
+                      left_bound  ${this.left_bound} 
+                      right_bound  ${this.right_bound} `);
+            }
+            else    
+                this.current_x += this.dx;
+    }
     updateBall()
     {
     
@@ -82,8 +122,9 @@ class  s_rooms {
         //this.display()
         
 
-        this.ball.move();
-        this.current_x += this.checkPaddleCollision();
+        this.checkGroundCollision()
+        //this.current_x += this.checkPaddleCollision();
+        this.ball.move(this.dx);
         console.log( `current_x : ${this.current_x} ` )
         this.players.forEach( player => 
         { 
@@ -132,6 +173,19 @@ class  s_rooms {
         }
     }
 
+
+    sendReady()
+    {
+        for (let player of this.players)
+            player.socket.send(JSON.stringify({
+                type: 'ready',
+                succes: true, 
+                data: player.id
+            }))
+    }
+
+
+
     sendEvent( playerid,event,resulte)
     {
 
@@ -168,10 +222,11 @@ class  s_rooms {
     {
         for (let player of this.players)
         {
-            if(player.is_ready())
+            if(player.is_ready()  && !player.socket_state)
             {
                 player.socket.on('message', msg => 
                     {
+                        console.log('\x1b[32m%s\x1b[0m', 'MSG RECEVIED');
                         try
                         {
                             const response = JSON.parse(msg);
@@ -186,13 +241,19 @@ class  s_rooms {
                             
                             switch (value)
                             {
-                                case 'init' : 
+                                case 'setup' : 
+                                      //  this.setGround(response)
+                                    break;
+                                case 'ready' : 
+                                    console.log(` [Handler] Received ready event: ${JSON.stringify(response)}`);
+                                    this.setGround(response)
                                     break;
                                 case 'move' :
                                 console.log(` [move] : ${ Object.keys(response)[2]}`)
                                     break;
                                 case 'Paddle':
-                                resulte =  player.update(response["data"])
+                                    this.setGround(response)
+                                    resulte =  player.update(response["data"])
                                     break; 
                                 default: 
                                 console.log(` ==== msg : ${response}`)
@@ -202,19 +263,20 @@ class  s_rooms {
                             console.log(` \x1b[31m%s\x1b[0m`,` [HANDLER] ${value} `)
                             // need to handle the validation of the response 
                             this.sendEvent(player.id,response,resulte);
-                         
+                            player.socket_state = true; 
                         } 
                         catch(e)
                         {
                             console.error(`Invalid JSON: in:`, msg);
                         }
-                            
+                        
                     }) 
             }
         }
     }
     display() {
         console.log(`s_rooms id: ${this.id}`);
+        console.log(`playground: ${this.playground}`);
         let count = 0;
         this.players.forEach(player => {
             console.log(`index[${count++}] : players_id : ${player.id} - paddle: `);

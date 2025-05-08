@@ -12,6 +12,9 @@ class s_players
         this.current_x = 0 ;
         this.setup();
         this.display(); 
+
+        // test 
+        this.socket_state = false 
     }   
 
 

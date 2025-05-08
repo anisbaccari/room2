@@ -13,6 +13,7 @@ class game {
       // to use fastify log inside 
       this.log  = logger; 
       this.playground = {g_width:0,y:0,g_deepth:0,g_speedBall: 1.5};
+
    }
 
    init()
@@ -45,6 +46,7 @@ class game {
    {
       for( let room of this.rooms)
       {
+         
          if(room.init())
             room.loop()
       }
@@ -76,5 +78,6 @@ class game {
          })
    }
 }
+23
 
 module.exports = { game};
