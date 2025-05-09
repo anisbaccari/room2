@@ -13,7 +13,7 @@ class Client
         if(!this.config)
           throw new Error(" no ConfigGame");
 
-        this.socket = new SocketClient(`ws://localhost:3000/`,this.config,this.id)
+        this.socket = new SocketClient(`ws://localhost:3001/`,this.config,this.id)
         
       
       

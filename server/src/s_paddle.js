@@ -27,8 +27,8 @@ class s_paddle
 
     setGround(playground)
     {
-        this.z_max =this.playground.max_ground.z
-        this.z_min = this.playground.min_ground.z
+        this.z_max =playground.max_ground.z
+        this.z_min = playground.min_ground.z
         console.log(` [s_paddle] [setGround]: z_max ${this.z_max} - z_min ${this.z_min} `);
     }
     getBoundingBox() {
@@ -82,10 +82,11 @@ class s_paddle
 
     check_z_Bounderies(key,direction)
     {
+        this.display()
         // direction : true = up 
         if(direction)
         {
-            if( this.z < this.z_max)
+            if( this.z < 100 )
             {
                 this.z +=this.paddleSpeed;
                 return true
@@ -94,20 +95,20 @@ class s_paddle
         }
         else
         {
-            if( this.z > this.z_min)
+            if( this.z > - 100)
             {
                 this.z -=this.paddleSpeed;
                 return true
             }
         }
-    //    this.display()
         
         return false;
     }
 
     display()
     {
-        console.log(` position x: ${this.x} - position y: ${this.y} - position z: ${this.z}`)
+        console.log( '\x1b[32m%s\x1b[0m', ` [s_paddle] position x: ${this.x} - position y: ${this.y} - position z: ${this.z}`)
+        console.log( '\x1b[32m%s\x1b[0m', ` [s_paddle]  z_max: ${this.z_max}   z_min: ${this.z_min}   `)
     }
 }
 

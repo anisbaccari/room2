@@ -78,7 +78,7 @@
     interBoundX()
     {
 
-        console.log(`[X CHECK] pos.x = ${this.position.x}, left = ${this.left_bound}, right = ${this.right_bound}`); 
+      //  console.log(`[X CHECK] pos.x = ${this.position.x}, left = ${this.left_bound}, right = ${this.right_bound}`); 
         if( this.position.x  <= this.left_bound ||this.position.x  >= this.right_bound )
             return true; 
         else 
@@ -87,7 +87,7 @@
     interBoundZ()
     {
 
-        console.log(`[Z CHECK] pos.z = ${this.position.z}, bottom = ${this.bottom_bound}, top = ${this.top_bound}`); 
+     //   console.log(`[Z CHECK] pos.z = ${this.position.z}, bottom = ${this.bottom_bound}, top = ${this.top_bound}`); 
         if( this.position.z  <= this.bottom_bound ||this.position.z  >= this.top_bound )
             return true; 
         else 
@@ -101,8 +101,8 @@
         {
             if(this.intersects(player.paddle))
             {
-                console.log(` \x1b[31m%s\x1b[0m`,` [checkGroundCollision]player touched `); 
-                player.paddle.display()
+               /*  console.log(` \x1b[31m%s\x1b[0m`,` [checkGroundCollision]player touched `); 
+                player.paddle.display() */
             }
         }
 
@@ -112,7 +112,7 @@
 
             if( hitX)
             {
-                console.log("HIT X WALL");
+                    //console.log("HIT X WALL");
                     this.direction.dx  = -this.direction.dx ; 
 
             }
@@ -120,7 +120,7 @@
                 this.position.x += this.direction.dx ; */
         if( hitZ)
             {
-                console.log("HIT Z WALL");
+                //console.log("HIT Z WALL");
                 this.direction.dz  = -this.direction.dz ; 
             
             }
