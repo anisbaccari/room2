@@ -9,27 +9,33 @@ class s_paddle
         //vector3D
         this.position = {x: this.x, y: this.y, z: this.z}
 
-        this.width = 2;
-        this.height = 10;
-        this.depth = 20;
+        this.width = 1;
+        this.height = 1;
+        this.depth = 10;
 
-        this.z_max = playground.g_width;
+        this.z_max =0
         this.x_max = playground.g_deepth;
-        this.z_min = 0;
+        this.z_min = 0
         this.x_min = 0;
 
-        this.paddleSpeed = 1.5;
+        this.paddleSpeed = 4;
         this.paddleSide = playerid % 2 == 0 ? "L" : "R";
         console.log(` [s_paddle] paddle_side : ${this.paddleSide} `);
     }
 
+
+
+    setGround(playground)
+    {
+        this.z_max =this.playground.max_ground.z
+        this.z_min = this.playground.min_ground.z
+        console.log(` [s_paddle] [setGround]: z_max ${this.z_max} - z_min ${this.z_min} `);
+    }
     getBoundingBox() {
 
 
-    
-
         return {
-            position: { x: this.x, y: this.y, z: this.z },
+            position: { x: this.position.x, y: this.position.y, z: this.position.z },
             size: { width: this.width, height: this.height, depth: this.depth }
         };
     } 
@@ -40,9 +46,9 @@ class s_paddle
         const b = other.getBoundingBox();
 
         return (
-            Math.abs(a.position.x - b.position.x) < (a.size.width / 2 + b.size.width / 2) &&
-           /*  Math.abs(a.position.y - b.position.y) < (a.size.height / 2 + b.size.height / 2) && */
-            Math.abs(a.position.z - b.position.z) < (a.size.depth / 2 + b.size.depth / 2)
+            Math.abs(a.position.x - b.position.x) < (a.this.width / 2 + b.this.width / 2) &&
+           /*  Math.abs(a.position.y - b.position.y) < (a.this.height / 2 + b.this.height / 2) && */
+            Math.abs(a.position.z - b.position.z) < (a.this.depth / 2 + b.this.depth / 2)
         );
     }
         // from client to server
@@ -79,7 +85,7 @@ class s_paddle
         // direction : true = up 
         if(direction)
         {
-            if( this.z < 37.5)
+            if( this.z < this.z_max)
             {
                 this.z +=this.paddleSpeed;
                 return true
@@ -88,7 +94,7 @@ class s_paddle
         }
         else
         {
-            if( this.z > -37.5)
+            if( this.z > this.z_min)
             {
                 this.z -=this.paddleSpeed;
                 return true

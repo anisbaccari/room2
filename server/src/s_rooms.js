@@ -31,7 +31,7 @@ class  s_rooms {
         {
             this.ball = new s_ball(this.id++)
             //this.handler();
-            this.sendReady()
+            this.sendReady() // do the HandShake -> first to send 
             this.is_set = true;
         }
         return true;
@@ -67,12 +67,16 @@ class  s_rooms {
     
             const data = event.data;
   
-         /*    console.log(`[setGround] g_width: ${data.g_width}`);
+            console.log('\x1b[32m%s\x1b[0m',`[setGround] data: ${(data.min_ground.x)}`);
+         /*   
+         ${Object.keys(data)}
             console.log(`[setGround] g_height: ${data.g_height}`);
             console.log(`[setGround] nbPlayers: ${data.nbPlayers}`);
             console.log(`[setGround] width_bound: ${data.width_bound}`);
             console.log(`[setGround] height_bound: ${data.height_bound}`); */
             this.ball.setGround(data)
+            for(let player of this.players)
+                player.setGround(data);
             
             // If needed, store or process this data here
     
@@ -85,46 +89,7 @@ class  s_rooms {
         this.updateBall(); 
     }
 
-    checkPaddleCollision() {
-/*         for (let player of this.players) {
 
-            if (this.ball.intersects(player.paddle)) {
-                this.direction.dx  = -this.direction.dx ;
-                console.log(`[COLLISION] Ball hit paddle of player ${player.id}`);
-             //   console.log(`[COLLISION] player  ${player.get_pos_z()}`);
-                return  this.direction.dx  ; 
-            }
-        }
-        return  this.direction.dx  ;  */
-    }
-    
-    checkGroundCollision()
-    {
-        /*   
-        if( this.ball.interBoundX(this.position.x))
-            {
-                    this.direction.dx  = -this.direction.dx ; 
-                    this.position.x += this.direction.dx ; 
-                    console.log(`== BOUND : 
-                      current_x  ${this.position.x} 
-                      left_bound  ${this.left_bound} 
-                      right_bound  ${this.right_bound} `);
-            }
-            else    
-                this.position.x += this.direction.dx ;
-      if( this.ball.interBoundZ(this.position.z))
-            {
-                this.direction.dz  = -this.direction.dz ; 
-                this.position.z += this.direction.dz ; 
-                console.log(`== BOUND : 
-                current_z  ${this.position.z} 
-                left_bound  ${this.left_bound} 
-                right_bound  ${this.right_bound} `);
-            }
-                    else    
-                        this.position.z += this.direction.dz ; */
-        
-    }
     updateBall()
     {
 

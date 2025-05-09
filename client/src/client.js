@@ -26,7 +26,9 @@ let arg  = {
   width :"50vw",
   height :"50vh",
   width_bound : 100, 
-  height_bound : 100, 
+  height_bound : 100,
+  max_ground : 0,
+  min_ground : 0,
   nbPlayers : 2
 }
 

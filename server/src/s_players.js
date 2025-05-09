@@ -7,7 +7,7 @@ class s_players
         this.socket = socket;
         this.id = id;
         this.playground = playground;
-        this.g_speedBall = this.playground.g_speedBall;
+        this.g_speedBall = 4;
         this.paddle =  new s_paddle( this.playground ,this.id);
         this.current_x = 0 ;
         this.setup();
@@ -27,6 +27,16 @@ class s_players
                 data: this.id
                 
             })))
+    }
+
+
+    setGround(playground)
+    {
+
+        console.log(` [player][setGround]  id : ${this.id} `);
+        this.paddle.setGround(playground)
+        
+        
     }
     display()
     {

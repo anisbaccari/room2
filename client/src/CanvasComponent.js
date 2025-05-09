@@ -7,6 +7,7 @@ export default class CanvasComponent {
         this.config = ConfigGame
         if(!this.config)
             throw new Error(" no ConfigGame");
+ 
         this.container = containerId
         this.isRendering = true;
         this.paddleSide = null;
@@ -45,11 +46,32 @@ export default class CanvasComponent {
         this.ball = new Ball(this.scene)
 
         /* ================================== */
+        this.setConfig();
         this.run();
         window.addEventListener("resize", () => {
             this.engine.resize();
         });
     }
+
+
+
+    // Helper to convert Vector3 to plain object
+    serializeVector3(v) {
+        return { x: v.x, y: v.y, z: v.z };
+    }
+
+    setConfig() {
+        const bounds = this.ground.getBoundingInfo().boundingBox;
+
+        this.config.min_ground = this.serializeVector3(bounds.minimumWorld);
+        this.config.max_ground = this.serializeVector3(bounds.maximumWorld);
+
+        console.log(`[CanvasComponent] [setConfig] max.x: ${this.config.max_ground.x}`);
+    }
+
+
+
+
 
     set_paddleSide(side)
     {
@@ -74,7 +96,7 @@ export default class CanvasComponent {
 
     display()
     {
-        const bounds = ground.getBoundingInfo().boundingBox;
+        const bounds = this.ground.getBoundingInfo().boundingBox;
         const min = bounds.minimumWorld;
         const max = bounds.maximumWorld;
         console.log(`[ [CanvasCompenent]  [Ground - size ] min: ${min}    max: ${max}`)

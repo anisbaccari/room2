@@ -40,7 +40,7 @@ export default class socketClient
                           case 'init':
                             this.setup(event);
                             break;
-                          case 'ready':
+                          case 'ready': // receive the Handshake
                               this.sendReady();
                               break;
                           case 'message':
@@ -83,6 +83,8 @@ export default class socketClient
     sendReady()
     {
       if (this.ws.readyState === 1) {
+
+        console.log(`[ [CanvasCompenent]  [setConfig] min: ${this.canvas.config.max_ground.x}    `)
         this.ws.send(JSON.stringify(
           {
             event: "ready",
