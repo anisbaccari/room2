@@ -25,8 +25,8 @@ class Client
 let arg  = {
   width :"50vw",
   height :"50vh",
-  width_bound : 50, 
-  height_bound : 50, 
+  width_bound : 100, 
+  height_bound : 100, 
   nbPlayers : 2
 }
 

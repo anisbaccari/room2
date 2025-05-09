@@ -15,7 +15,12 @@ class  s_rooms {
         this.right_bound = 65 ;
         this.current_x = 0 ;
         this.dx  =  Math.random() < 0.5 ? 5 : -5
+        this.dz =  Math.random() < 0.5 ? 5 : -5
+        this.position = { x: 0, y: 0, z: 0 };
+        this.direction = { dx: 1, dy: 0, dz: 1 }; 
+        this.setDirection()
     }
+
     init()
     {
         if(this.players.length !=2)
@@ -27,7 +32,7 @@ class  s_rooms {
         }
         if(!this.is_set)
         {
-            this.ball = new s_ball(this.id)
+            this.ball = new s_ball(this.id++)
             //this.handler();
             this.sendReady()
             this.is_set = true;
@@ -49,7 +54,13 @@ class  s_rooms {
             }))
     }
 
-
+    setDirection()
+    {
+        this.direction.dx  =  Math.random() < 0.5 ? 5 : -5
+        this.direction.dz  =  Math.random() < 0.5 ? 5 : -5
+        console.log(`[initBall] dx: ${this.direction.dx}`)
+        console.log(`[initBall] dx: ${this.direction.dz}`)
+    }
     setGround(event)
     {
         
@@ -59,11 +70,11 @@ class  s_rooms {
     
             const data = event.data;
   
-            console.log(`[setGround] g_width: ${data.g_width}`);
+         /*    console.log(`[setGround] g_width: ${data.g_width}`);
             console.log(`[setGround] g_height: ${data.g_height}`);
             console.log(`[setGround] nbPlayers: ${data.nbPlayers}`);
             console.log(`[setGround] width_bound: ${data.width_bound}`);
-            console.log(`[setGround] height_bound: ${data.height_bound}`);
+            console.log(`[setGround] height_bound: ${data.height_bound}`); */
             this.ball.setGround(data)
             
             // If needed, store or process this data here
@@ -81,51 +92,65 @@ class  s_rooms {
         for (let player of this.players) {
 
             if (this.ball.intersects(player.paddle)) {
-                this.dx = -this.dx;
+                this.direction.dx  = -this.direction.dx ;
                 console.log(`[COLLISION] Ball hit paddle of player ${player.id}`);
              //   console.log(`[COLLISION] player  ${player.get_pos_z()}`);
-                return  this.dx ; 
+                return  this.direction.dx  ; 
             }
         }
-        return  this.dx ; 
+        return  this.direction.dx  ; 
     }
     
     checkGroundCollision()
     {
-        if( this.ball.interBound(this.current_x))
+        if( this.ball.interBoundX(this.position.x))
             {
-                    this.dx = -this.dx; 
-                    this.current_x += this.dx; 
+                    this.direction.dx  = -this.direction.dx ; 
+                    this.position.x += this.direction.dx ; 
                     console.log(`== BOUND : 
-                      current_x  ${this.current_x} 
+                      current_x  ${this.position.x} 
                       left_bound  ${this.left_bound} 
                       right_bound  ${this.right_bound} `);
             }
             else    
-                this.current_x += this.dx;
+                this.position.x += this.direction.dx ;
+/*         if( this.ball.interBoundZ(this.position.z))
+            {
+                this.direction.dz  = -this.direction.dz ; 
+                this.position.z += this.direction.dz ; 
+                console.log(`== BOUND : 
+                current_z  ${this.position.z} 
+                left_bound  ${this.left_bound} 
+                right_bound  ${this.right_bound} `);
+            }
+                    else    
+                        this.position.z += this.direction.dz ; */
+        
     }
     updateBall()
     {
     
-/*         if( this.ball.interBound(this.current_x))
+/*         if( this.ball.interBound(this.position.x))
         {
                 this.dx = -this.dx; 
-                this.current_x += this.dx; 
+                this.position.x += this.dx; 
                 console.log(`== BOUND : 
-                  current_x  ${this.current_x} 
+                  current_x  ${this.position.x} 
                   left_bound  ${this.left_bound} 
                   right_bound  ${this.right_bound} `);
         }
         else    
-            this.current_x += this.dx; */
+            this.position.x += this.dx; */
         
         //this.display()
         
-
-        this.checkGroundCollision()
-        //this.current_x += this.checkPaddleCollision();
-        this.ball.move(this.dx);
-        console.log( `current_x : ${this.current_x} ` )
+      
+        this.ball.checkGroundCollision()
+        //this.position.x += this.checkPaddleCollision();
+        this.ball.move(this.direction );
+        this.position = this.ball.position
+       this.ball.display()
+        console.log( `position: ${this.position.x} - ${this.position.z}  ` )
         this.players.forEach( player => 
         { 
     
@@ -133,8 +158,9 @@ class  s_rooms {
             ({ 
                     type: "ball", 
                     succes: true,
-                    x: this.dx,
-                    ball_x: this.current_x
+                    x: this.ball.direction.dx ,
+                    z: this.ball.direction.dz ,
+                    ball_x: this.position.x
             }));
         
         })
@@ -226,7 +252,6 @@ class  s_rooms {
             {
                 player.socket.on('message', msg => 
                     {
-                        console.log('\x1b[32m%s\x1b[0m', 'MSG RECEVIED');
                         try
                         {
                             const response = JSON.parse(msg);
@@ -234,7 +259,7 @@ class  s_rooms {
                             const state = Object.keys(response)[1];
                             const value = response[key];
                             let resulte =false;
-                            console.log(` [Handler] [PLAYER ${player.id}]  get :  ${response[key]}`);
+                            console.log('\x1b[32m%s\x1b[0m', ` [Handler] [PLAYER ${player.id}]  get :  ${response[key]}`);
             
                             if(!state)
                                 throw new Error(`[Server] Invalide state : ${state} `);
@@ -252,7 +277,6 @@ class  s_rooms {
                                 console.log(` [move] : ${ Object.keys(response)[2]}`)
                                     break;
                                 case 'Paddle':
-                                    this.setGround(response)
                                     resulte =  player.update(response["data"])
                                     break; 
                                 default: 

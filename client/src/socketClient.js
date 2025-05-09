@@ -53,8 +53,7 @@ export default class socketClient
                             break;
                           case 'ball':
                             this.info();
-                            let x = event.x;
-                            this.canvas.ball.mesh.position.x += x;
+                           this.updateBall(event)
                             break;
                           case 'move':     
                             this.handlemove(event);
@@ -96,6 +95,8 @@ export default class socketClient
       }
         console.log(`[Client - init ] send  : ${Object.keys(this.canvas.config)} `);
     }
+
+
     sendMove(data) // send to other 
     {
       console.log(`[client] [${this.playerid}] sendMove : ${data.key}`)
@@ -128,9 +129,17 @@ export default class socketClient
       console.log(` [client] sendMove : ${data.key}`) 
     }
 
+
+
+    updateBall(event)
+    {
+      let x = event.x;
+      let z = event.z;
+      this.canvas.ball.mesh.position.x += x;
+      this.canvas.ball.mesh.position.z += z;
+    }
     updateMove(event) // receive from server  
     {
-    //  console.log(` [SERVER] FOR PADDLE : ${Object.keys(event)}`)
    
       
       const state =event["succes"];

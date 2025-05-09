@@ -7,28 +7,46 @@
         this.y = 0;
         this.z = 0;
 
+        this.position = { x: 0, y: 0, z:0}
+        this.direction = { dx: 1, dy: 0, dz: 1 }; 
+
         this.width = 2;
         this.height = 2;
         this.depth = 2;
 
-        this.left_bound = -100 - this.width / 2;
-        this.right_bound = 100 + this.width / 2;
+/*         this.left_bound = -100 - this.width / 2;
+        this.right_bound = 100 + this.width / 2; */
 
         this.playground = null
         this.dx = 1; // movement direction
         this.dz = 1;
+        console.log(` constructor x -  : ${ this.position.x} -  z ${ this.position.z} `);  
+        this.setDirection()
         this.display()
+    }
+
+    setDirection()
+    {
+        this.direction.dx  =  Math.random() < 0.5 ? 5 : -5
+        this.direction.dz  =  Math.random() < 0.5 ? 5 : -5
+        console.log(`[initBall] dx: ${this.direction.dx}`)
+        console.log(`[initBall] dx: ${this.direction.dz}`)
     }
 
     setGround(playground)
     {
         this.playground = playground;
-        console.log(`[Ball] g_width: ${playground}`)
-        console.log(`[Ball] g_height: ${this.playground.g_height}`);
-        console.log(`[Ball] nbPlayers: ${this.playground.nbPlayers}`);
-        console.log(`[Ball] width_bound: ${this.playground.width_bound}`);
-        console.log(`[Ball] height_bound: ${this.playground.height_bound}`);
+           
+        this.left_bound = - (this.playground.width_bound) - this.width / 2;
+        this.right_bound = this.playground.width_bound + this.width / 2;
+        this.top_bound = this.playground.height_bound + this.height / 2;
+        this.bottom_bound =  - this.playground.height_bound + this.height / 2;
+       /*  console.log(`[Ball]   this.left_bound: ${this.left_bound}`)
+        console.log(`[Ball] this.right_bound : ${this.right_bound }`);
+        console.log(`[Ball] this.top_bound: ${this.top_bound}`);
+        console.log(`[Ball] this.bottom_bound: ${this.bottom_bound}`); */
     }
+
 
     getBoundingBox() {
         
@@ -55,27 +73,75 @@
     }
 
     // Update position logic (example)
-    move(dx) {
+    move(direction) {
+       
         
-        console.log(` x : ${this.x} -  z ${this.z} `);  
-        this.x += dx;
+        console.log(` x -  : ${ this.position.x} -  z ${ this.position.z} `);  
+        console.log(` Direction : x -  : ${ this.direction.dx} -  z ${ this.direction.dz} `); 
+        this.position.x += direction.dx;
+        this.position.z += direction.dz;
       //  this.z += this.dz;
     }
 
-    interBound(position)
+    interBoundX(position)
     {
 
-        console.log(` \x1b[31m%s\x1b[0m`,` BALL x ${this.x} `);  
-        this.x = position
-        if(  this.x   < this.left_bound || this.x   >= this.right_bound )
+      //  console.log(` \x1b[31m%s\x1b[0m`,` BALL x ${this.x} `);  
+        if( position  < this.left_bound ||position  >= this.right_bound )
             return true; 
         else 
             return false; 
     }
+    interBoundZ(position)
+    {
+
+    //    console.log(` \x1b[31m%s\x1b[0m`,` BALL z ${this.z} `);      
+        if(  position  < this.bottom_bound || position  >= this.top_bound )
+            return true; 
+        else 
+            return false; 
+    }
+
+    checkGroundCollision()
+    {
+        console.log(` \x1b[31m%s\x1b[0m`,` [BEFORE] position x  ${this.position.x}  z ${this.position.z} `); 
+     
+        if( this.interBoundX(this.position.x))
+            {
+                    this.direction.dx  = -this.direction.dx ; 
+                    this.position.x += this.direction.dx ; 
+                    console.log(`== BOUND : 
+                      current_x  ${this.position.x} 
+                      left_bound  ${this.left_bound} 
+                      right_bound  ${this.right_bound} `);
+            }
+            else    
+                this.position.x += this.direction.dx ;
+        if( this.interBoundZ(this.position.z))
+            {
+                this.direction.dz  = -this.direction.dz ; 
+                this.position.z += this.direction.dz ; 
+                console.log(`== BOUND : 
+                current_z  ${this.position.z} 
+                left_bound  ${this.left_bound} 
+                right_bound  ${this.right_bound} `);
+            }
+                    else    
+                        this.position.z += this.direction.dz ;
+        console.log(` \x1b[31m%s\x1b[0m`,` [AFTER] position x  ${this.position.x}  z ${this.position.z} `); 
+     
+       // return this.position 
+    }
+
+
+    update()
+    {
+
+    }
     display() 
     {
-        console.log(` \x1b[31m%s\x1b[0m`,` BALL ID ${this.id} `);  
-        console.log(` x : ${this.x} -  z ${this.z} `); 
+     
+        console.log(` [BALL] position x : ${this.position.x} -  z ${this.position.z} `); 
       //  console.log(` playground { width : ${this.playground.g_width} -  depth : ${this.playground.g_deepth} `); 
     }
 
