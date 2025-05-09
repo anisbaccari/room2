@@ -50,6 +50,7 @@ class s_paddle
     {
  
 
+        this.display()
         switch(key)
         {
             case "W":
@@ -65,6 +66,7 @@ class s_paddle
             default:
                 break;
         }
+
 
         return false; 
 

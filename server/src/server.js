@@ -26,7 +26,7 @@ setInterval(() => {
 /*   let rooms = fastify.game.rooms;
   startGame(rooms); */
   fastify.game.loop();
-}, 200);
+}, 500);
 
 
 

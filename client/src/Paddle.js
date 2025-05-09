@@ -17,7 +17,7 @@ export  default class Paddle {
         this.side = null;
         this.box = null
         this.otherBox  = null
-        this.init(scene, 50);
+        this.init(scene, 100);
     }
     // Initialize paddles with given scene and ground width
     init(scene, g_width) {
@@ -36,8 +36,8 @@ export  default class Paddle {
     }
     getPositions(g_width) {
         return {
-            left: -g_width / 2 + this.width / 2,
-            right: g_width / 2 - this.width / 2,
+            left:( - g_width / 2 ) +this.width ,
+            right:( g_width / 2 ) - this.width ,
         };
     }
     createPaddle(name, positionX, scene) {
@@ -55,12 +55,12 @@ export  default class Paddle {
     displayPosition()
     {
 
-        console.log(`Posiiton :  ${this.box.position.z }`)
+        console.log(`[Padlde]  Posiiton :  x   ${this.box.position.x }  y :${this.box.position.y } z: ${this.box.position.z }`)
     }
     displayOtherPosition()
     {
         
-        console.log(`OtherPosiiton :  ${this.otherBox.position.z }`)
+        console.log(` [Padlde]  OtherPosiiton :   x   ${this.otherBox.position.x }  y :${this.otherBox.position.y } z: ${this.otherBox.position.z }`)
     }
     updatePaddlesMovement() {
 
@@ -131,6 +131,8 @@ export  default class Paddle {
                 this.moveOtherDown = true;
                 console.log(" [Paddle] S ")
                 break;
+            default:
+                break;
         }
     }
     // need to incorpore sendevent()
@@ -152,6 +154,12 @@ export  default class Paddle {
                 case "S":
                 case "s":
                     this.moveOtherDown = true;
+                    break;
+                case "i":
+                    this.displayPosition()
+                    this.displayOtherPosition()
+                    break;
+                default:
                     break;
             }
             // Apply the key event on the paddle 

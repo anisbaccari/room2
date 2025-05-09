@@ -8,18 +8,15 @@
         this.z = 0;
 
         this.position = { x: 0, y: 0, z:0}
-        this.direction = { dx: 1, dy: 0, dz: 1 }; 
+        this.direction = { dx: 0, dy: 0, dz: 0 }; 
 
         this.width = 2;
         this.height = 2;
         this.depth = 2;
 
-/*         this.left_bound = -100 - this.width / 2;
-        this.right_bound = 100 + this.width / 2; */
-
         this.playground = null
-        this.dx = 1; // movement direction
-        this.dz = 1;
+
+        this.a = 10 // to test the bound with a cnst K
         console.log(` constructor x -  : ${ this.position.x} -  z ${ this.position.z} `);  
         this.setDirection()
         this.display()
@@ -37,14 +34,18 @@
     {
         this.playground = playground;
            
-        this.left_bound = - (this.playground.width_bound) - this.width / 2;
-        this.right_bound = this.playground.width_bound + this.width / 2;
-        this.top_bound = this.playground.height_bound + this.height / 2;
-        this.bottom_bound =  - this.playground.height_bound + this.height / 2;
-       /*  console.log(`[Ball]   this.left_bound: ${this.left_bound}`)
+        this.left_bound =  ( - this.playground.width_bound /2)  - this.width / 2 +  this.a ;
+        this.right_bound = (this.playground.width_bound /2 )+ this.width / 2 - this.a ;
+        this.top_bound =( this.playground.height_bound /2 ) - this.height / 2  - this.a  ;
+        this.bottom_bound =  (- this.playground.height_bound /2 ) + this.height / 2  + this.a;
+        
+        console.log(`[Ball]   this.playground.height_bound: ${this.playground.height_bound }`)
+        console.log(`[Ball] this.playground.width_bound : ${this.playground.width_bound }`);
+        
+        console.log(`[Ball]   this.left_bound: ${this.left_bound}`)
         console.log(`[Ball] this.right_bound : ${this.right_bound }`);
         console.log(`[Ball] this.top_bound: ${this.top_bound}`);
-        console.log(`[Ball] this.bottom_bound: ${this.bottom_bound}`); */
+        console.log(`[Ball] this.bottom_bound: ${this.bottom_bound}`);
     }
 
 
@@ -66,77 +67,91 @@
         console.log(`[intersecte] {a} x : ${a.position.x}  - z : ${a.position.z}` )
         console.log(`[intersecte] {b} x : ${b.position.x}  - z : ${b.position.z}` )
         return (
-/*             Math.abs(a.position.x - b.position.x) < (a.size.width / 2 + b.size.width / 2) &&
-            Math.abs(a.position.y - b.position.y) < (a.size.height / 2 + b.size.height / 2) && */
+            Math.abs(a.position.x - b.position.x) < (a.size.width / 2 + b.size.width / 2) &&
+            /*Math.abs(a.position.y - b.position.y) < (a.size.height / 2 + b.size.height / 2) && */
             Math.abs(a.position.z - b.position.z) < (a.size.depth / 2 + b.size.depth / 2)
         );
     }
 
     // Update position logic (example)
-    move(direction) {
+    move() {
        
         
-        console.log(` x -  : ${ this.position.x} -  z ${ this.position.z} `);  
-        console.log(` Direction : x -  : ${ this.direction.dx} -  z ${ this.direction.dz} `); 
-        this.position.x += direction.dx;
-        this.position.z += direction.dz;
+        console.log(` [move] x -  : ${ this.position.x} -  z ${ this.position.z} `);  
+        console.log(` [move] Direction : x -  : ${ this.direction.dx} -  z ${ this.direction.dz} `); 
+        this.position.x += this.direction.dx;
+        this.position.z += this.direction.dz;
       //  this.z += this.dz;
     }
 
-    interBoundX(position)
+    interBoundX()
     {
 
       //  console.log(` \x1b[31m%s\x1b[0m`,` BALL x ${this.x} `);  
-        if( position  < this.left_bound ||position  >= this.right_bound )
+        if( this.position.x  < this.left_bound ||this.position.x  >= this.right_bound )
             return true; 
         else 
             return false; 
     }
-    interBoundZ(position)
+    interBoundZ()
     {
 
     //    console.log(` \x1b[31m%s\x1b[0m`,` BALL z ${this.z} `);      
-        if(  position  < this.bottom_bound || position  >= this.top_bound )
+        if( this.position.z  < this.bottom_bound ||this.position.z  >= this.top_bound )
             return true; 
         else 
             return false; 
     }
 
-    checkGroundCollision()
+    checkGroundCollision(players)
     {
         console.log(` \x1b[31m%s\x1b[0m`,` [BEFORE] position x  ${this.position.x}  z ${this.position.z} `); 
      
-        if( this.interBoundX(this.position.x))
+
+        for(let player of players)
+        {
+            if(this.intersects(player.paddle))
+            {
+                console.log(` \x1b[31m%s\x1b[0m`,` [checkGroundCollision]player touched `); 
+                player.paddle.display()
+            }
+        }
+
+
+
+            if( this.interBoundX())
             {
                     this.direction.dx  = -this.direction.dx ; 
-                    this.position.x += this.direction.dx ; 
+                   // this.position.x += this.direction.dx ; 
                     console.log(`== BOUND : 
                       current_x  ${this.position.x} 
                       left_bound  ${this.left_bound} 
                       right_bound  ${this.right_bound} `);
             }
-            else    
-                this.position.x += this.direction.dx ;
-        if( this.interBoundZ(this.position.z))
+           /*  else    
+                this.position.x += this.direction.dx ; */
+        if( this.interBoundZ())
             {
                 this.direction.dz  = -this.direction.dz ; 
-                this.position.z += this.direction.dz ; 
+            //    this.position.z += this.direction.dz ; 
                 console.log(`== BOUND : 
                 current_z  ${this.position.z} 
                 left_bound  ${this.left_bound} 
                 right_bound  ${this.right_bound} `);
             }
-                    else    
-                        this.position.z += this.direction.dz ;
+
+        
+                  /*   else    
+                        this.position.z += this.direction.dz ; */
         console.log(` \x1b[31m%s\x1b[0m`,` [AFTER] position x  ${this.position.x}  z ${this.position.z} `); 
      
-       // return this.position 
     }
 
 
-    update()
+    update(players)
     {
-
+        this.checkGroundCollision(players)
+        this.move()
     }
     display() 
     {

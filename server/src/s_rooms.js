@@ -14,10 +14,7 @@ class  s_rooms {
         this.left_bound = -65 ;
         this.right_bound = 65 ;
         this.current_x = 0 ;
-        this.dx  =  Math.random() < 0.5 ? 5 : -5
-        this.dz =  Math.random() < 0.5 ? 5 : -5
         this.position = { x: 0, y: 0, z: 0 };
-        this.direction = { dx: 1, dy: 0, dz: 1 }; 
         this.setDirection()
     }
 
@@ -56,10 +53,10 @@ class  s_rooms {
 
     setDirection()
     {
-        this.direction.dx  =  Math.random() < 0.5 ? 5 : -5
+/*         this.direction.dx  =  Math.random() < 0.5 ? 5 : -5
         this.direction.dz  =  Math.random() < 0.5 ? 5 : -5
         console.log(`[initBall] dx: ${this.direction.dx}`)
-        console.log(`[initBall] dx: ${this.direction.dz}`)
+        console.log(`[initBall] dx: ${this.direction.dz}`) */
     }
     setGround(event)
     {
@@ -89,7 +86,7 @@ class  s_rooms {
     }
 
     checkPaddleCollision() {
-        for (let player of this.players) {
+/*         for (let player of this.players) {
 
             if (this.ball.intersects(player.paddle)) {
                 this.direction.dx  = -this.direction.dx ;
@@ -98,11 +95,12 @@ class  s_rooms {
                 return  this.direction.dx  ; 
             }
         }
-        return  this.direction.dx  ; 
+        return  this.direction.dx  ;  */
     }
     
     checkGroundCollision()
     {
+        /*   
         if( this.ball.interBoundX(this.position.x))
             {
                     this.direction.dx  = -this.direction.dx ; 
@@ -114,7 +112,7 @@ class  s_rooms {
             }
             else    
                 this.position.x += this.direction.dx ;
-/*         if( this.ball.interBoundZ(this.position.z))
+      if( this.ball.interBoundZ(this.position.z))
             {
                 this.direction.dz  = -this.direction.dz ; 
                 this.position.z += this.direction.dz ; 
@@ -129,28 +127,14 @@ class  s_rooms {
     }
     updateBall()
     {
-    
-/*         if( this.ball.interBound(this.position.x))
-        {
-                this.dx = -this.dx; 
-                this.position.x += this.dx; 
-                console.log(`== BOUND : 
-                  current_x  ${this.position.x} 
-                  left_bound  ${this.left_bound} 
-                  right_bound  ${this.right_bound} `);
-        }
-        else    
-            this.position.x += this.dx; */
-        
-        //this.display()
-        
+
       
-        this.ball.checkGroundCollision()
+        this.ball.update(this.players)
         //this.position.x += this.checkPaddleCollision();
-        this.ball.move(this.direction );
+        //this.ball.move();
         this.position = this.ball.position
-       this.ball.display()
-        console.log( `position: ${this.position.x} - ${this.position.z}  ` )
+        this.ball.display()
+        console.log( `[s_rooms] position x:  ${this.position.x} -  z:${this.position.z}  ` )
         this.players.forEach( player => 
         { 
     

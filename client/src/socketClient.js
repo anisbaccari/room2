@@ -214,7 +214,8 @@ export default class socketClient
         
         this.sendMove(event); // to othher & server 
 
-
+        if (event.key === "z") 
+          this.canvas.display()
         if (event.key === "p") 
         { // Press 'p' to pause/unpause
           this.isRendering = !this.isRendering;

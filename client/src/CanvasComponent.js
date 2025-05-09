@@ -31,6 +31,13 @@ export default class CanvasComponent {
         this.light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), this.scene);
         this.light.intensity = 0.7;
 
+
+          /* =========== [GROUND] ================== */
+        this.ground = BABYLON.MeshBuilder.CreateGround("ground", {
+            width: this.config.width_bound,
+            height: this.config.height_bound,
+        }, this.scene);
+        
         /* ============ [PLAYERS] ============ */
           
         this.paddle = new Paddle(this.scene)
@@ -61,6 +68,16 @@ export default class CanvasComponent {
     {
         console.log(`[ [CanvasCompenent] : ${move}`)
         this.paddle.updateOtherPaddleMovement(move);
+    }
+
+
+
+    display()
+    {
+        const bounds = ground.getBoundingInfo().boundingBox;
+        const min = bounds.minimumWorld;
+        const max = bounds.maximumWorld;
+        console.log(`[ [CanvasCompenent]  [Ground - size ] min: ${min}    max: ${max}`)
     }
     run() {
         // Start the render loop initially
