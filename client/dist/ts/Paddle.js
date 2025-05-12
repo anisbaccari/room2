@@ -21,7 +21,10 @@ export default class Paddle {
         this.init(scene, 100);
     }
     init(scene, g_width) {
-        this.colors = Array(6).fill(new BABYLON.Color3.Red());
+        const colorA = new BABYLON.Color3(1, 0, 0);
+        const colorB = new BABYLON.Color3(0, 0, 1);
+        const mixedColor = BABYLON.Color3.Lerp(colorA, colorB, 0.5); // purple-ish
+        this.colors = Array(6).fill(mixedColor);
         const positions = this.getPositions(g_width);
         this.leftPaddle = this.createPaddle("Left Paddle", positions.left, scene);
         this.rightPaddle = this.createPaddle("Right Paddle", positions.right, scene);
