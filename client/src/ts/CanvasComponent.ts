@@ -2,6 +2,7 @@
 import Ball from './ball.js';
 import Paddle from './Paddle.js';
 import ConfigGame from './ConfigGame.js';
+import Ground from './ground.js';
 declare const BABYLON: any;
 
 export default class CanvasComponent {
@@ -41,10 +42,14 @@ export default class CanvasComponent {
     this.light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), this.scene);
     this.light.intensity = 0.7;
 
-    this.ground = BABYLON.MeshBuilder.CreateGround("ground", {
+/*     this.ground = BABYLON.MeshBuilder.CreateGround("ground", {
       width: this.config.width_bound,
       height: this.config.height_bound
-    }, this.scene);
+    }, this.scene) */;
+
+    let dimension ={ g_width: 100, g_height:100}
+
+    this.ground = new Ground(this.scene,dimension)
 
     this.paddle = new Paddle(this.scene);
     this.ball = new Ball(this.scene);
